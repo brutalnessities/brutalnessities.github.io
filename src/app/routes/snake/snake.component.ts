@@ -2,7 +2,7 @@ import { Component, OnInit, viewChild, ViewChild, ViewContainerRef } from '@angu
 
 // const snake = document.getElementById("snake");
 // let food;
-let resetButton = false;
+let resetButton = true;
 let tailSegments: any = [];
 // let this.score;
 
@@ -21,8 +21,6 @@ const RIGHT: Direction = [false,false,false,true];
 
 @Component({
   selector: 'app-snake',
-  standalone: true,
-  imports: [],
   templateUrl: './snake.component.html',
   styleUrl: './snake.component.sass'
 })

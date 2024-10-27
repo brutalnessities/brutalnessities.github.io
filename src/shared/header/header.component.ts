@@ -1,18 +1,15 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { AppModule } from '../../app/app.module';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   templateUrl: './header.component.html',
   styleUrl: './header.component.sass',
-  imports: [AppModule]
 })
 export class HeaderComponent {
   routes = [
     {
       label: 'Home',
-      path: '/'
+      path: '/',
     },
     // {
     //   label: 'Miscellaneous',
@@ -20,15 +17,15 @@ export class HeaderComponent {
     // },
     {
       label: 'Test',
-      path: '/test'
+      path: '/test',
     },
     {
       label: 'Snake game',
-      path: '/snake'
+      path: '/snake',
     },
     {
       label: 'Config-builder',
-      path: '/config-builder'
+      path: '/config-builder',
     },
   ];
 
@@ -52,10 +49,9 @@ export class HeaderComponent {
   get headerHeight() {
     return `${this._headerHeight}px`;
   }
-  
+
   toggleOpen() {
     console.log('⭕⭕⭕');
     this.open = !this.open;
   }
 }
-
