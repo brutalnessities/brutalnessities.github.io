@@ -1,0 +1,83 @@
+body
+  margin: 0
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 100vh
+  background-color: #000
+
+
+#score
+  color: white
+  font-size: 1.5em
+  font-weight: 700
+  margin-bottom: 0
+
+
+.game-area
+  position: relative
+  width: 800px
+  height: 400px
+  background-color: #222
+  border: 2px solid #fff
+
+
+.snake
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%,-50%)
+  width: 15px
+  height: 15px
+  background-color: white
+  z-index: 2
+
+
+.snakeTail
+  position: absolute
+  background-color: white
+  width: 15px
+  height: 15px
+  z-index: 2
+
+
+.food
+  position: absolute
+  transform: translate(-50%,-50%)
+  color: white
+  width: 10px
+  height: 10px
+  display: grid
+  align-content: center
+  justify-content: center
+
+
+.info
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%,-50%)
+  font-size: 10em
+
+
+button
+  z-index: 3
+  font-weight: 700
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%,-50%)
+  font-size: 1em
+
+
+button:hover
+  background-color: green
+  color: white
+
+
+.deadzone
+  position: absolute
+  height: 2px
+  width: 2px
+  background-color: red
+  z-index: 1

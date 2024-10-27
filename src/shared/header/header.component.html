@@ -1,0 +1,19 @@
+<header class="header" [class.closed]="isShown" #header>
+  <h1 class="header-title">Torg's Art</h1>
+  <nav class="header-nav">
+    <!-- Nav buttons -->
+    <button
+      *ngFor="let route of routes"
+      class="header-nav-link"
+      [routerLink]="[route.path]"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      mat-raised-button
+    >
+      {{ route.label }}
+    </button>
+  </nav>
+</header>
+<button mat-mini-fab (click)="toggleIsShown()" class="close">
+  <mat-icon>{{ isShown ? "visibility_on" : "visibility_off" }}</mat-icon>
+</button>
