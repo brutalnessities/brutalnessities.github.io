@@ -14,10 +14,10 @@ export class HeaderComponent {
       label: 'Home',
       path: '/'
     },
-    {
-      label: 'Miscellaneous',
-      path: '/miscellaneous'
-    },
+    // {
+    //   label: 'Miscellaneous',
+    //   path: '/miscellaneous'
+    // },
     {
       label: 'Test',
       path: '/test'
@@ -32,26 +32,30 @@ export class HeaderComponent {
     },
   ];
 
-  isShown = true;
+  open = true;
+  isSticky = false;
+  _headerHeight = 135;
 
   //watch for page scroll and toggleIsShown after 100px
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    const header = document.querySelector('header');
-    if (!header) return;
-    console.log(Math.floor(window.screenY), header.clientHeight * .75);
-    if (header && window.scrollY >= header.clientHeight) {
-      this.isShown = false;
-      console.log('😊', this.isShown);
-    } else {
-      this.isShown = true
-      console.log('😍', this.isShown);
+    this._headerHeight = document.querySelector('header')?.clientHeight ?? 135;
+    if (window.scrollY > this._headerHeight) {
+      if (!this.isSticky) console.log('💦💦💦', this);
+      this.isSticky = true;
+    } else if (window.scrollY === 0) {
+      this.isSticky = false;
+      // window.scrollTo(0, 0);
     }
   }
+
+  get headerHeight() {
+    return `${this._headerHeight}px`;
+  }
   
-  toggleIsShown() {
-    console.log('toggleIsShown');
-    this.isShown = !this.isShown;
+  toggleOpen() {
+    console.log('⭕⭕⭕');
+    this.open = !this.open;
   }
 }
 

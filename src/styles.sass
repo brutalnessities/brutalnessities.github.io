@@ -1,8 +1,17 @@
 :host
     --mat-protected-button-icon-spacing: 0
     --mat-protected-button-icon-offset: 0
+
+html
+    height: 100%
+app-root,
 body
+    display: flex
+    flex-direction: column
+    height: 100%
+    width: 100%
     margin: 0
+
 
     button.close
         z-index: 1
@@ -12,14 +21,15 @@ body
         margin: 1em
         padding: 0.35em
         color: white
+        border-radius: 50%
         background: #4e4c63
         &:hover
             background: #544eff
-        border-radius: 50%
+            border-radius: 50%
 
-    button + button
-        margin-left: 1em
-        margin-bottom: .5em
+    // button + button
+    //     margin-left: 1em
+    //     margin-bottom: .5em
 // /* You can add global styles to this file, and also import other style files */
 // :host
 //     --bright-blue: oklch(51.01% 0.274 263.83)
@@ -160,4 +170,3 @@ body
 //         width: 100%
 //         background: var(--red-to-pink-to-purple-horizontal-gradient)
 //         margin-block: 1.5rem
-
