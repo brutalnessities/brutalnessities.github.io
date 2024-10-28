@@ -21,5 +21,4 @@ export const routes: Routes = [
         path: 'config-builder',
         component: ConfigBuilderComponent,
     }
-
 ];

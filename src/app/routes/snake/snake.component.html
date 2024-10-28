@@ -3,7 +3,7 @@
   <div class="info">hello</div>
   <div class="snake" id="snake"></div>
 </div>
-<button *ngIf=""></button>
+<button *ngIf="resetButton" (click)="log()">RESTART</button>
 
 <ng-template #food>
   <span>🟢</span>

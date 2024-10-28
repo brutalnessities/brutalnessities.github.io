@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AppModule } from './app.module';
+import { HeaderComponent } from "../shared/header/header.component";
 
 @Component({
   standalone: true,
-  imports: [AppModule],
+  imports: [AppModule, HeaderComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
