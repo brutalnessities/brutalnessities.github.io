@@ -1,13 +1,4 @@
-<p id="score">
-<div class="game-area" #game_area>
-  <div class="info">hello</div>
-  <div class="snake" id="snake"></div>
+<!-- <button *ngIf="resetButton">RESTART</button> -->
+<div *ngFor="let i of scaleOf(X)" class="col">
+    <div *ngFor="let j of scaleOf(Y)" id="cell" [ngStyle]="{'height': px(Y)}" class="row"></div>
 </div>
-<button *ngIf="resetButton" (click)="log()">RESTART</button>
-
-<ng-template #food>
-  <span>🟢</span>
-</ng-template>
-<ng-template #snake>
-  <span>❎</span>
-</ng-template>
