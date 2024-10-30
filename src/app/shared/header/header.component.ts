@@ -1,6 +1,9 @@
 import { Component, HostListener, Output } from '@angular/core';
+import { SharedModule } from '../shared.module';
 
 @Component({
+  standalone: true,
+  imports: [SharedModule],
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.sass',

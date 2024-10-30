@@ -1,4 +1,12 @@
 <!-- <button *ngIf="resetButton">RESTART</button> -->
-<div *ngFor="let i of scaleOf(X)" class="col">
-    <div *ngFor="let j of scaleOf(Y)" id="cell" [ngStyle]="{'height': px(Y)}" class="row"></div>
+<div class="content">
+  <div *ngFor="let i of scaleOf(X)" class="col">
+    <div
+      *ngFor="let j of scaleOf(Y)"
+      id="cell"
+      [style.height.px]="H"
+      [style.width.px]="H"
+      class="row"
+    ></div>
+  </div>
 </div>

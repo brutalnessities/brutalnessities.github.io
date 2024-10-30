@@ -2,8 +2,6 @@
     background-color: #333
     color: white
     font-weight: bolder
-    position: relative
-    z-index: 1
     width: 100%
 
     h1
@@ -18,11 +16,13 @@
         line-height: 1
         padding: 0 1rem 1rem
 
-.sticky
-    position: fixed
-    animation: sticky .5s ease forwards
-.slick
-    animation: sticky .5s ease backwards
+    &.sticky
+        position: fixed
+    &.open
+        animation: sticky .5s ease forwards
+    &.close
+        display: none
+        animation: sticky .5s ease reverse
 
 @keyframes sticky
     from

@@ -1,7 +1,10 @@
-<header class="header" *ngIf="open" [ngClass]="open ? 'open' : 'closed'" [class.sticky]="isSticky">
+<header
+  class="header"
+  [ngClass]="open ? 'open' : 'close'"
+  [class.sticky]="isSticky"
+>
   <h1 class="header-title">Torg's Art</h1>
   <nav class="header-nav">
-    <!-- Nav buttons -->
     <button
       *ngFor="let route of routes"
       class="header-nav-link"
@@ -14,7 +17,7 @@
     </button>
   </nav>
 </header>
-<div *ngIf="isSticky" class="sticky" [style.height]="headerHeight"></div>
+
 <button mat-mini-fab (click)="toggleOpen()" class="close">
   <mat-icon>{{ open ? "visibility_on" : "visibility_off" }}</mat-icon>
 </button>

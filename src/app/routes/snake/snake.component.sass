@@ -1,13 +1,10 @@
 :host
-  margin: 0
+  background-color: #003e10
+
+.content
   display: flex
   justify-content: center
   align-items: center
-  background-color: #003e10
-  height: 100%
-  width: 100%
-
-$scale: 10px
 
 button
   z-index: 1
@@ -18,16 +15,13 @@ button
   transform: translate(-50%,-50%)
   font-size: 1em
 
-
 button:hover
   background-color: green
   color: white
 
 #cell
   background-color: chartreuse
-  height: $scale
-  width: $scale
-  margin: calc($scale*.1)
+  outline: 1px solid black
 
 .col
   color: white

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AppModule } from './app.module';
-import { HeaderComponent } from "../shared/header/header.component";
+import { HeaderComponent } from "./shared/header/header.component";
 
 @Component({
   standalone: true,

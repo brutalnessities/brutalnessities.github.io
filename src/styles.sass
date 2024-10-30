@@ -1,31 +1,30 @@
+@use 'sass/variables.sass' as variables
+
 :host
+    --merica: linear-gradient(315deg, red, white, blue)
     --mat-protected-button-icon-spacing: 0
     --mat-protected-button-icon-offset: 0
 
 html
     height: 100%
-app-root,
 body
-    display: flex
-    flex-direction: column
     height: 100%
-    width: 100%
     margin: 0
+    background-color: --merica
 
-
-    button.close
-        z-index: 1
-        position: fixed
-        top: 0
-        right: 0
-        margin: 1em
-        padding: 0.35em
-        color: white
+button.close
+    z-index: 1
+    position: fixed
+    top: 0
+    right: 0
+    margin: 1em
+    padding: 0.35em
+    color: white
+    border-radius: 50%
+    background: #4e4c63
+    &:hover
+        background: #544eff
         border-radius: 50%
-        background: #4e4c63
-        &:hover
-            background: #544eff
-            border-radius: 50%
 
     // button + button
     //     margin-left: 1em

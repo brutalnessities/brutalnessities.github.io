@@ -6,6 +6,12 @@ import { ConfigBuilderComponent } from './routes/config-builder/config-builder.c
 
 export const routes: Routes = [
     {
+        path: "",
+        // TODO:  loadChildren: () => import('./customers/customers.module').then(m => m.CustomersModule)
+        // https://angular.dev/guide/ngmodules/lazy-loading#imports-and-route-configuration
+        component: TestComponent,
+    },
+    {
         path: "miscellaneous",
         component: MiscellaneousComponent,
     },
