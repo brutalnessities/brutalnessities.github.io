@@ -1,7 +1,6 @@
 <header
   class="header"
-  [ngClass]="open ? 'open' : 'close'"
-  [class.sticky]="isSticky"
+  [ngClass]="open ? (isSticky ? 'sticky' : 'open') : 'close'"
 >
   <h1 class="header-title">Torg's Art</h1>
   <nav class="header-nav">

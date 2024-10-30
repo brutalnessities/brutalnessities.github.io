@@ -1,7 +1,9 @@
-@use 'sass/variables.sass' as variables
+@use 'sass/variables.sass' as var
+$burntPage: linear-gradient(90deg, antiquewhite, white, antiquewhite)
 
 :host
-    --merica: linear-gradient(315deg, red, white, blue)
+    --merica: var.$america
+    --burnt-page: $burntPage
     --mat-protected-button-icon-spacing: 0
     --mat-protected-button-icon-offset: 0
 
@@ -10,7 +12,7 @@ html
 body
     height: 100%
     margin: 0
-    background-color: --merica
+    background: $burntPage
 
 button.close
     z-index: 1
