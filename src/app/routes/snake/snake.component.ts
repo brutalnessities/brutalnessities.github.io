@@ -1,44 +1,17 @@
-import { Component, Host, HostListener } from '@angular/core';
-
-enum Tenant {
-  Snake = 'snake',
-  Food = 'food',
-}
-
-type Direction = 'up' | 'down' | 'left' | 'right';
-type Snake = {
-  x: number;
-  y: number;
-  direction: Direction;
-  speed: number;
-  tail: Array<{ x: number; y: number }>;
-  alive: boolean;
-};
-type Food = {
-  x: number;
-  y: number;
-  alive: boolean;
-};
-type Cell = {
-  tenant?: Tenant.Snake | Tenant.Food;
-  x: number;
-  y: number;
-  style?: JSON;
-};
-type Grid = Array<Array<Cell>>;
+import { Component, HostListener, OnInit } from '@angular/core';
+import { BehaviorSubject, filter, Observable, Subject } from 'rxjs';
+import { Food, Grid, Snake, SnakeSegment, Tenant, Cell } from './types';
+import { Direction } from '../../shared/lib/types';
 
 @Component({
   selector: 'app-snake',
   templateUrl: './snake.component.html',
   styleUrl: './snake.component.sass',
 })
-export class SnakeComponent {
+export class SnakeComponent implements OnInit {
   snake: Snake = {
-    x: 0,
-    y: 0,
-    direction: 'up',
-    speed: 100,
-    tail: [],
+    body: [],
+    speed: 1,
     alive: false,
   };
 
@@ -47,6 +20,10 @@ export class SnakeComponent {
     y: 0,
     alive: false,
   };
+
+  grid$: BehaviorSubject<Grid> = new BehaviorSubject<Grid>([]);
+
+  destroy$: Subject<void> = new Subject<void>();
 
   _scale = 1;
   scaleOf(num?: number): Array<number> {
@@ -59,9 +36,9 @@ export class SnakeComponent {
     `${num}px`;
   }
 
-  X = 1;
-  Y = 1;
-  H = 1;
+  X: number = 1;
+  Y: number = 1;
+  H: number = 1;
 
   button = {
     show: true,
@@ -70,38 +47,33 @@ export class SnakeComponent {
 
   selector = '//*[@id="column"][9]//*[@id="cell"][19]';
 
-  constructor() {
+  /**
+   * @description
+   *  - watch the grid updates and handles game logic
+   */
+  ngOnInit() {
     this.resize();
-    this.snake = {
-      x: Math.floor(this.X / 2),
-      y: Math.floor(this.Y / 2),
-      direction: 'up',
-      speed: 100,
-      tail: [],
-      alive: false,
-    };
-    this.food = {
-      x: Math.floor(this.getRandomNumberInRange(0, this.X)),
-      y: Math.floor(this.getRandomNumberInRange(0, this.Y)),
-      alive: false,
-    };
-    console.log('🐍🐍🐍', this);
+    this.grid.pipe(filter((grid) => grid.length > 0)).subscribe((grid) => {
+      console.log('🔥🔥🔥', grid);
+    });
   }
 
   _gridArray: Grid = [];
-  gridArray() {
-    this._gridArray = this.scaleOf(this.X).map((x: number) =>
-      this.scaleOf(this.Y).map(
-        (y: number) =>
-          ({
-            x,
-            y,
-            tenant: null,
-            style: undefined,
-          } as unknown as Cell)
-      )
+
+  newGrid() {
+    const grid: Grid = this.scaleOf(this.X).map((x: number) =>
+      this.scaleOf(this.Y).map((y: number) => ({ x, y } as unknown as Cell))
     );
-    return this._gridArray;
+    return grid;
+  }
+
+  set grid(grid: Grid) {
+    this._gridArray = grid;
+    this.grid$.next(grid);
+  }
+
+  get grid(): Observable<Grid> {
+    return this.grid$.asObservable();
   }
 
   resize() {
@@ -111,7 +83,7 @@ export class SnakeComponent {
     this.H = c;
     this.X = Math.floor(a / c);
     this.Y = Math.floor(b / c);
-    this.gridArray();
+    this.grid = this.newGrid();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -133,71 +105,122 @@ export class SnakeComponent {
   onClick() {
     this.button.show = false;
     this.button.text = 'Restart';
-    this.snake.alive = true;
     this.startGame();
   }
 
   startGame() {
-    this.snake = {
-      x: Math.floor(this.X / 2),
-      y: Math.floor(this.Y / 2),
-      direction: 'up',
-      speed: 100,
-      tail: [],
-      alive: true,
-    };
-    this.food = {
-      x: Math.floor(this.getRandomNumberInRange(0, this.X)),
-      y: Math.floor(this.getRandomNumberInRange(0, this.Y)),
-      alive: true,
-    };
-    this.gameLoop();
+    if (!this.snake.alive) {
+      this.initSnake();
+      this.snake.alive = true;
+      this.gameLoop();
+    }
+  }
+
+  initSnake() {
+    this.snake.alive = true;
+    this.snake.speed = 100;
+    this.snake.body = Array(5)
+      .fill(0)
+      .map((_, i) => ({
+        x: Math.floor(this.getRandomNumberInRange(0, this.X)),
+        y: Math.floor(this.getRandomNumberInRange(0, this.Y)),
+        head: i === 0,
+        direction: Direction.Up,
+      }));
+    for (const segment of this.snake.body) {
+      this._gridArray[segment.x][segment.y].tenant = Tenant.Snake;
+    }
   }
 
   gameLoop() {
     if (!this.snake.alive) return;
     console.log('start game loop');
+    const X = Math.floor(this.getRandomNumberInRange(0, this.X));
+    const Y = Math.floor(this.getRandomNumberInRange(0, this.Y));
+    console.log('🌍', X, Y);
+    // this._gridArray[Math.floor(X)][Y].tenant = Tenant.Snake;
+    this.grid = this._gridArray;
+    this.updatePosition();
     // this.moveSnake();
     // this.checkCollision();
     // this.checkFood();
     // setTimeout(() => this.gameLoop(), this.snake.speed);
   }
 
-  // moveSnake() {
-  //   const { x, y, tail } = this.snake;
-  //   this.snake.tail = [{ x, y }, ...tail];
-  //   this.snake.x =
-  //     x +
-  //     (this.snake.direction === 'left'
-  //       ? -1
-  //       : this.snake.direction === 'right'
-  //       ? 1
-  //       : 0);
-  //   this.snake.y =
-  //     y +
-  //     (this.snake.direction === 'up'
-  //       ? -1
-  //       : this.snake.direction === 'down'
-  //       ? 1
-  //       : 0);
-  //   console.log('🐍🐍🐍', this.snake);
-  //   this.gridArray()[x][y].tenant = Tenant.Snake;
-  // }
+  isOutOfBounds(x: number, y: number) {
+    return x < 0 || x >= this.X || y < 0 || y >= this.Y;
+  }
 
-  // checkCollision() {
-  //   const { x, y, tail } = this.snake;
-  //   if (
-  //     x < 0 ||
-  //     x >= this.X ||
-  //     y < 0 ||
-  //     y >= this.Y ||
-  //     tail.some((t) => t.x === x && t.y === y)
-  //   ) {
-  //     this.snake.alive = false;
-  //     this.button.show = true;
-  //     this.button.text = 'Game Over';
-  //   }
-  // }
+  outOfBounds(x: number, y: number, direction: Direction) {
+    const out = this.isOutOfBounds(x, y);
+    if (out) {
+      switch (direction) {
+        case Direction.Up:
+          return { x: x, y: this.Y - 1 };
+        case Direction.Down:
+          return { x: x, y: 0 };
+        case Direction.Left:
+          return { x: this.X - 1, y: y };
+        case Direction.Right:
+          return { x: 0, y: y };
+      }
+    }
+    return { x, y };
+  }
+
+  checkCollision(segment: SnakeSegment): boolean {
+    if (!segment.head) return false;
+    return (
+      this.isOutOfBounds(segment.x, segment.y) ||
+      this._gridArray[segment.x][segment.y].tenant === Tenant.Snake
+    );
+  }
+
+  moveSegment(segment: SnakeSegment) {
+    const isOutOfBounds = this.isOutOfBounds(segment.x, segment.y);
+
+    switch (segment.direction) {
+      case Direction.Up:
+        segment.y = isOutOfBounds ? 0 : segment.y - 1;
+        break;
+      case Direction.Down:
+        segment.y = isOutOfBounds ? this.Y - 1 : segment.y + 1;
+        break;
+      case Direction.Left:
+        segment.x = isOutOfBounds ? this.X - 1 : segment.x - 1;
+        break;
+      case Direction.Right:
+        segment.x = isOutOfBounds ? 0 : segment.x + 1;
+        break;
+    }
+  }
+
+  updatePosition() {
+    this.snake.body.reduce((prev, curr) => {
+      if (prev.head && this.checkCollision(curr)) {
+        console.log('💀💀💀');
+        this.snake.alive = false;
+      }
+
+      this.moveSegment(curr);
+
+      this._gridArray[prev.x][prev.y].tenant = Tenant.Snake;
+      return prev;
+    });
+  }
+  // this.snake = {
+  //   x: Math.floor(this.getRandomNumberInRange(0, this.X)),
+  //   y: Math.floor(this.getRandomNumberInRange(0, this.Y)),
+  //   direction: 'up',
+  //   speed: 100,
+  //   tail: [],
+  //   alive: true,
+  // };
+  // this.food = {
+  //   x: Math.floor(this.getRandomNumberInRange(0, this.X)),
+  //   y: Math.floor(this.getRandomNumberInRange(0, this.Y)),
+  //   alive: true,
+  // };
 
   // checkFood() {
   //   const { x, y } = this.snake;
