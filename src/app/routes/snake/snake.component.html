@@ -1,12 +1,15 @@
-<!-- <button *ngIf="resetButton">RESTART</button> -->
-<div class="content">
-  <div *ngFor="let i of scaleOf(X)" class="col">
+<button *ngIf="button.show" (click)="onClick()">{{ button.text }}</button>
+<div class="content" id="grid">
+  <div *ngFor="let col of _gridArray; index as i" class="col" id="column">
     <div
-      *ngFor="let j of scaleOf(Y)"
+      *ngFor="let row of col; index as j"
       id="cell"
       [style.height.px]="H"
       [style.width.px]="H"
       class="row"
-    ></div>
+      [ngClass]="row.tenant ?? 'empty'"
+    >
+      {{ i }}.{{ j }}
+    </div>
   </div>
 </div>
