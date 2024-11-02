@@ -3,6 +3,7 @@ import { Coordinate, Direction } from '../../shared/lib/types';
 export enum Tenant {
   Snake = 'snake',
   Food = 'food',
+  Empty = 'empty',
 }
 
 export type Snake = {
@@ -26,7 +27,7 @@ export type Food = {
 };
 
 export type Cell = {
-  tenant?: Tenant.Snake | Tenant.Food;
+  tenant?: Tenant;
   x: number;
   y: number;
   style?: JSON;

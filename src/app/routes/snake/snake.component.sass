@@ -6,10 +6,23 @@
   align-items: center
   height: 100%
 
+> ::before
+  content: ''
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background: red
+  z-index: -1
+
 .content
   display: flex
   justify-content: center
   align-items: center
+  border: 2px solid yellowgreen
+
+  outline: 3px solid aliceblue
 
 button
   z-index: 1
@@ -25,8 +38,8 @@ button:hover
   color: white
 
 #cell
-  background-color: #c8ff9166
-  outline: 1px solid black
+  background-color: white//#301230
+  outline: 1px solid #6b1b6b42
   &.snake
     background-color: green
   &.food
