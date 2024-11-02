@@ -38,10 +38,11 @@ button:hover
   color: white
 
 #cell
-  background-color: white//#301230
+  background-color: #301230
   outline: 1px solid #6b1b6b42
   &.snake
-    background-color: green
+    background-color: yellowgreen
+    animation: colorShift 5s infinite
   &.food
     background-color: red
 
@@ -51,4 +52,8 @@ button:hover
 .row
   color: black
 
-//*[@id="column"][9]//*[@id="cell"][19]
+@keyframes colorShift
+  0%
+    filter: hue-rotate(0deg)
+  100%
+    filter: hue-rotate(360deg) contrast(1)
