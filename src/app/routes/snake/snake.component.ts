@@ -60,9 +60,9 @@ export class SnakeComponent implements OnInit {
    */
   ngOnInit() {
     this.resize();
-    this.grid.pipe(filter((grid) => grid.length > 0)).subscribe((grid) => {
-      console.log('🔥🔥🔥', grid);
-    });
+    // this.grid.pipe(filter((grid) => grid.length > 0)).subscribe((grid) => {
+    //   console.log('🔥🔥🔥', grid);
+    // });
   }
 
   _gridArray: Grid = [];
@@ -192,12 +192,9 @@ export class SnakeComponent implements OnInit {
         // get the next coordinate
         let { x, y } = this.outOfBoundsWarp(segment);
 
-        if (head) {
-          console.log('🧠🧠🧠', x, y, this.snake);
-        }
 
-        if (this.checkCollision({ x, y })) {
-          // this.snake.alive = false;
+        if (head && this.checkCollision({ x, y })) {
+          this.snake.alive = false;
         }
 
         if (!head) {
