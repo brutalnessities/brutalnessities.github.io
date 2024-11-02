@@ -9,6 +9,8 @@ import { Coordinate, Direction } from '../../shared/lib/types';
   styleUrl: './snake.component.sass',
 })
 export class SnakeComponent implements OnInit {
+  score = 0;
+
   snake: Snake = {
     body: [],
     speed: 1,
@@ -18,7 +20,6 @@ export class SnakeComponent implements OnInit {
   food: Food = {
     x: 0,
     y: 0,
-    alive: false,
   };
 
   grid$: BehaviorSubject<Grid> = new BehaviorSubject<Grid>([]);
@@ -79,9 +80,25 @@ export class SnakeComponent implements OnInit {
   }
 
   resize() {
-    const a = window.innerWidth;
-    const b = document.querySelector('.main')?.clientHeight ?? 135;
-    const c = Math.sqrt(a ^ (2 + b) ^ 2);
+    const pythagorean = (num: number = 0) => {
+      const padding = 50;
+      num += padding;
+      const a = window.innerWidth - num;
+      const b = (document.querySelector('.main')?.clientHeight ?? 500) - num;
+      const c = Math.sqrt(a ^ (2 + b) ^ 2);
+      return { a, b, c };
+    };
+    
+    let { a, b, c } = pythagorean();
+    let i = 0;
+    while (c < 20) {
+      // find a larger hypotenuse
+      const tempObj = pythagorean(i++);
+      a = tempObj.a;
+      b = tempObj.b;
+      c = tempObj.c;
+    }
+
     this.H = c;
     this.X = Math.floor(a / c);
     this.Y = Math.floor(b / c);
@@ -113,6 +130,7 @@ export class SnakeComponent implements OnInit {
   startGame() {
     if (!this.snake.alive) {
       this.initSnake();
+      this.spawnFood();
       this.snake.alive = true;
       this.grid = this._gridArray;
       this.gameLoop();
@@ -133,31 +151,29 @@ export class SnakeComponent implements OnInit {
         direction: Direction.Up,
         tail: i === 4,
       }));
-    for (const segment of this.snake.body) {
-      this._gridArray[segment.curr.x][segment.curr.y].tenant = Tenant.Snake;
-      this._gridArray[segment.curr.x][segment.curr.y].style = JSON.parse(
-        JSON.stringify({
-          background: segment.head ? 'yellow' : segment.tail ? 'blue' : 'green',
-        })
-      );
-    }
     console.log('🐍🐍🐍', this.snake);
+  }
+
+  spawnFood() {
+    const x = Math.floor(this.getRandomNumberInRange(0, this.X));
+    const y = Math.floor(this.getRandomNumberInRange(0, this.Y));
+    if (this._gridArray[x][y].tenant === Tenant.Snake) {
+      this.spawnFood();
+    }
+    this._gridArray[x][y].tenant = Tenant.Food;
   }
 
   gameLoop() {
     if (!this.snake.alive) return;
     // this.grid = this._gridArray;
-    this.updatePosition();
-    // this.moveSnake();
-    // this.checkCollision();
-    // this.checkFood();
-    // setTimeout(() => this.gameLoop(), this.snake.speed * 10);
+    this.SNAKE_BRAIN();
+    // setTimeout(() => this.gameLoop(), this.snake.speed);
   }
 
   checkCollision({ x, y }: Coordinate): boolean {
-    return this._gridArray[x][y].tenant === Tenant.Snake;
+    return this._gridArray?.[x]?.[y]?.tenant === Tenant.Snake;
   };
-  updatePosition() {
+  SNAKE_BRAIN() {
     this.snake.body = this.snake.body.map((segment, i) => {
       const { head, tail } = segment;
       
@@ -176,6 +192,8 @@ export class SnakeComponent implements OnInit {
       
       if (this._gridArray[x][y].tenant === Tenant.Food) {
         //eat food
+        this.spawnFood();
+        this.score++;
         console.warn('🍔🍔🍔');
       }
 
@@ -194,29 +212,30 @@ export class SnakeComponent implements OnInit {
   isOutOfBounds(x: number, y: number) {
     return x < 0 || x >= this.X || y < 0 || y >= this.Y;
   }
-  outOfBoundsWarp(segment: SnakeSegment) {
+  outOfBoundsWarp(segment: SnakeSegment, wasOut: boolean = false): Coordinate {
+    if (!segment.head) return segment.curr; 
     let { x, y } = segment.curr;
-    const isOutOfBounds = this.isOutOfBounds(x, y);
     switch (segment.direction) {
       case Direction.Up:
-        y = isOutOfBounds ? 0 : y - 1;
+        y = wasOut ? this.Y - 1 : y - 1;
         break;
       case Direction.Down:
-        y = isOutOfBounds ? this.Y - 1 : y + 1;
+        y = wasOut ? 0 : y + 1;
         break;
       case Direction.Left:
-        x = isOutOfBounds ? this.X - 1 : x - 1;
+        x = wasOut ? this.X - 1 : x - 1;
         break;
       case Direction.Right:
-        x = isOutOfBounds ? 0 : x + 1;
+        x = wasOut ? 0 : x + 1;
         break;
+      }
+    const isOutOfBounds = this.isOutOfBounds(x, y);
+    if (isOutOfBounds) {
+      return this.outOfBoundsWarp(segment, true);
     }
     return { x, y };
   }
 
-
-  // move everthing into this and change other functions to be private
-  SNAKE_BRAIN() {}
 
   @HostListener('document:keydown', ['$event'])
   handleKeyPress(event: KeyboardEvent) {
@@ -240,6 +259,6 @@ export class SnakeComponent implements OnInit {
     }
     
     console.log('🔑🔑🔑', event.key);
-    this.updatePosition();
+    this.SNAKE_BRAIN();
   }
 }

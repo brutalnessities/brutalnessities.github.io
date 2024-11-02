@@ -23,7 +23,6 @@ export type SnakeSegment = {
 export type Food = {
   x: number;
   y: number;
-  alive: boolean;
 };
 
 export type Cell = {
