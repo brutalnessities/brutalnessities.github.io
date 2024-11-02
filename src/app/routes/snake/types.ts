@@ -15,7 +15,6 @@ export type Snake = {
 export type SnakeSegment = {
   id: number;
   direction: Direction;
-  head: boolean;
   tail: boolean;
   prev: Coordinate;
   curr: Coordinate;

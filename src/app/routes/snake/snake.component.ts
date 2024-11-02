@@ -131,8 +131,9 @@ export class SnakeComponent implements OnInit {
         this.startGame();
         break;
       case 'Restart':
+        this.snake.alive = false;
         this.resize();
-        // this.initSnake();
+        this.startGame();
         break;
     }
   }
@@ -170,52 +171,68 @@ export class SnakeComponent implements OnInit {
     if (this._gridArray[x][y].tenant !== Tenant.Snake) {
       this._gridArray[x][y].tenant = Tenant.Food;
       return;
+    } else {
+      this.spawnFood();
     }
-    this.spawnFood();
   }
 
+  timeoutId: any;
   gameLoop() {
-    if (!this.snake.alive) return;
+    if (!this.snake.alive) {
+      clearTimeout(this.timeoutId);
+      return;
+    }
     // this.grid = this._gridArray;
     this.SNAKE_BRAIN();
-    setTimeout(() => this.gameLoop(), this.snake.speed);
+
+    this.timeoutId = setTimeout(() => this.gameLoop(), this.snake.speed);
   }
 
-  checkCollision({ x, y }: Coordinate): boolean {
-    return this._gridArray?.[x]?.[y]?.tenant === Tenant.Snake;
+  checkCollision(segment: SnakeSegment): boolean {
+    const { x, y } = segment.curr;
+    return this._gridArray[x][y].tenant === Tenant.Snake;
   }
   SNAKE_BRAIN() {
     try {
-      this.snake.body = this.snake.body.map((segment, i) => {
-        const { head, tail } = segment;
+      for (let i = this.snake.body.length - 1; i >= 0; i--) {
+        const segment = this.snake.body[i];
+        // this.snake.body = this.snake.body.map((segment, i) => {
+        const head = segment.id === 0;
+        const { tail, prev, curr } = segment;
+
+        if (head && this.checkCollision(segment)) {
+          console.error('💀💀💀💀');
+          this.snake.alive = false;
+        }
+
+        //eat food
+        if (head && this._gridArray[curr.x][curr.y].tenant === Tenant.Food) {
+          this.score++;
+          this.spawnFood();
+          this.addSegment();
+          console.warn('🍔🍔🍔');
+        }
+
+        // clear the prev position
+        if (tail) {
+          this._gridArray[prev.x][prev.y].tenant = undefined;
+        }
 
         // get the next coordinate
         let { x, y } = this.outOfBoundsWarp(segment);
 
-
-        if (head && this.checkCollision({ x, y })) {
-          this.snake.alive = false;
-        }
-
+        // follow the head
         if (!head) {
-          // follow the head
           x = this.snake.body[i - 1].prev.x;
           y = this.snake.body[i - 1].prev.y;
         }
 
-        if (head && this._gridArray[x][y].tenant === Tenant.Food) {
-          //eat food
-          this.spawnFood();
-          this.score++;
-          console.warn('🍔🍔🍔');
-        }
-
         // set the new position
-        this._gridArray[segment.prev.x][segment.prev.y].tenant = tail ? undefined : Tenant.Snake;
+        this._gridArray[segment.curr.x][segment.curr.y].tenant = tail ? undefined : Tenant.Snake;
         segment.prev = { x: segment.curr.x, y: segment.curr.y };
         segment.curr = { x, y };
-        return segment;
-      });
+        this.snake.body[i] = segment;
+      }
     } catch (error) {
       console.error('🔥🔥🔥', error);
       this.snake.alive = false;
@@ -231,7 +248,8 @@ export class SnakeComponent implements OnInit {
   }
   outOfBoundsWarp(segment: SnakeSegment, wasOut: boolean = false): Coordinate {
     try {
-      if (!segment.head) return segment.curr;
+      const head = segment.id === 0;
+      if (!head) return segment.curr;
       let { x, y } = segment.curr;
       switch (segment.direction) {
         case Direction.Up:
@@ -256,6 +274,20 @@ export class SnakeComponent implements OnInit {
       console.error('🔥🔥🔥', error);
       return { x: this.X / 2, y: this.Y / 2 };
     }
+  }
+
+  addSegment() {
+    this.snake.body[this.snake.body.length - 1].tail = false;
+    const last = this.snake.body[this.snake.body.length - 1];
+    const { x, y } = this.outOfBoundsWarp(last);
+    this.snake.body.push({
+      id: this.snake.body.length,
+      curr: { x, y },
+      prev: { x, y },
+      direction: last.direction,
+      tail: true,
+    });
+    console.log('🐍', this.snake);
   }
 
   @HostListener('document:keydown', ['$event'])
