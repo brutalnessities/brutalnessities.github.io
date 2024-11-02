@@ -10,6 +10,11 @@ export enum Direction {
   Right = 'right',
 }
 
+export type Coordinate = {
+  x: number;
+  y: number;
+};
+
 // type Snake = {
 //   body: SnakeSegment[];
 //   speed: number;

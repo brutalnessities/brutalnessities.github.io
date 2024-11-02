@@ -1,4 +1,4 @@
-import { Direction } from '../../shared/lib/types';
+import { Coordinate, Direction } from '../../shared/lib/types';
 
 export enum Tenant {
   Snake = 'snake',
@@ -12,10 +12,12 @@ export type Snake = {
 };
 
 export type SnakeSegment = {
-  x: number;
-  y: number;
-  head: boolean;
+  id: number;
   direction: Direction;
+  head: boolean;
+  tail: boolean;
+  prev: Coordinate;
+  curr: Coordinate;
 };
 
 export type Food = {
