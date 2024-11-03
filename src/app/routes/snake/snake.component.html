@@ -1,5 +1,10 @@
-<button (click)="onClick()">{{ button.text }}</button>
+<button *ngIf="button.show" (click)="onClick()">{{ button.text }}</button>
 <div class="content" id="grid">
+  <div class="score">
+    <p>
+      Score: {{score}}
+    </p>
+  </div>
   <div *ngFor="let col of _gridArray; index as i" class="col" id="column">
     <div
       *ngFor="let row of col; index as j"

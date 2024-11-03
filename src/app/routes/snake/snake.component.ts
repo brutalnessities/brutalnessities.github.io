@@ -87,7 +87,7 @@ export class SnakeComponent implements OnInit {
     const pythagorean = (num: number = 0) => {
       num += this.padding;
       const a = window.innerWidth - num;
-      const b = (document.querySelector('.main')?.clientHeight ?? 500) - num;
+      const b = (document.querySelector('app-snake')?.clientHeight ?? 500) - num;
       const c = Math.sqrt(a ^ (2 + b) ^ 2);
       return { a, b, c };
     };
@@ -128,10 +128,12 @@ export class SnakeComponent implements OnInit {
     switch (this.button.text) {
       case 'Start':
         this.button.text = 'Restart';
+        this.button.show = false;
         this.startGame();
         break;
       case 'Restart':
         this.snake.alive = false;
+        this.score = 0;
         this.resize();
         this.startGame();
         break;
@@ -162,7 +164,6 @@ export class SnakeComponent implements OnInit {
         direction: Direction.Up,
         tail: i === 4,
       }));
-    console.log('🐍🐍🐍', this.snake);
   }
 
   spawnFood() {
@@ -170,6 +171,7 @@ export class SnakeComponent implements OnInit {
     const y = Math.floor(this.getRandomNumberInRange(0, this.Y));
     if (this._gridArray[x][y].tenant !== Tenant.Snake) {
       this._gridArray[x][y].tenant = Tenant.Food;
+      this.food = { x, y };
       return;
     } else {
       this.spawnFood();
@@ -202,7 +204,13 @@ export class SnakeComponent implements OnInit {
 
         if (head && this.checkCollision(segment)) {
           console.error('💀💀💀💀');
+          this._gridArray[curr.x][curr.y].tenant = undefined; 
+          this._gridArray[curr.x][curr.y].style = JSON.parse(
+            JSON.stringify({ 'background-color': 'red' })
+          );
           this.snake.alive = false;
+          this.button.show = true;
+          return;
         }
 
         //eat food
@@ -225,6 +233,7 @@ export class SnakeComponent implements OnInit {
         if (!head) {
           x = this.snake.body[i - 1].prev.x;
           y = this.snake.body[i - 1].prev.y;
+          segment.direction = this.snake.body[i - 1].direction;
         }
 
         // set the new position
@@ -287,7 +296,6 @@ export class SnakeComponent implements OnInit {
       direction: last.direction,
       tail: true,
     });
-    console.log('🐍', this.snake);
   }
 
   @HostListener('document:keydown', ['$event'])
