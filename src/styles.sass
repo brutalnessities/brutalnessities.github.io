@@ -32,19 +32,17 @@ body
         opacity: .75
         filter: blur(75px)
 
-button.close
-    z-index: 1
-    position: fixed
-    top: 0
-    right: 0
-    margin: 1em
-    padding: 0.35em
-    color: white
-    border-radius: 50%
-    background: #4e4c63
-    &:hover
-        background: #544eff
-        border-radius: 50%
+    button.close
+        --mdc-fab-small-container-color: #ffacac
+        --mat-fab-small-state-layer-color: #bb0000
+    
+    button.add
+        --mdc-fab-small-container-color: #047c0081
+        --mat-fab-small-state-layer-color: #047c00
+        --mdc-protected-button-container-color: #faf9fd
+        --mdc-protected-button-label-text-color: #005cbb
+
+    --mdc-elevated-card-container-color: transparent
 
     // button + button
     //     margin-left: 1em
@@ -179,13 +177,13 @@ button.close
 // .social-links a:hover svg path
 //     fill: var(--gray-900)
 
-// @media screen and (max-width: 650px)
-//     .content
-//         flex-direction: column
-//         width: max-content
+@media screen and (max-width: 650px)
+    .content
+        flex-direction: column
+        width: max-content
 
-//     .divider
-//         height: 1px
-//         width: 100%
-//         background: var(--red-to-pink-to-purple-horizontal-gradient)
-//         margin-block: 1.5rem
+    .divider
+        height: 1px
+        width: 100%
+        background: var(--red-to-pink-to-purple-horizontal-gradient)
+        margin-block: 1.5rem

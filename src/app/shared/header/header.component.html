@@ -1,6 +1,7 @@
 <header
   class="header"
   [ngClass]="open ? (isSticky ? 'sticky' : 'open') : 'close'"
+  [hidden]="!open"
 >
   <h1 class="header-title">Torg's Art</h1>
   <nav class="header-nav">
@@ -18,5 +19,5 @@
 </header>
 
 <button mat-mini-fab (click)="toggleOpen()" class="close">
-  <mat-icon>{{ open ? "visibility_on" : "visibility_off" }}</mat-icon>
+  <mat-icon>{{ open ? "visibility_off" : "visibility_on" }}</mat-icon>
 </button>

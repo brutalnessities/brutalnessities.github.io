@@ -40,10 +40,10 @@ export class HeaderComponent {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     this._headerHeight = document.querySelector('header')?.clientHeight ?? 135;
-    if (window.scrollY > this._headerHeight) {
-      if (!this.isSticky) console.log('💦💦💦', this);
+    if (window.scrollY > this._headerHeight + 100) {
+      // if (!this.isSticky) console.log('💦💦💦', this);
       this.isSticky = true;
-    } else if (window.scrollY === 0) {
+    } else {
       this.isSticky = false;
       // window.scrollTo(0, 0);
     }

@@ -1,1 +1,68 @@
-<p>config-builder works!</p>
+<mat-card>
+  <p>config-builder works!</p>
+  <div class="content">
+    <section class="config">
+      <form [formGroup]="test">
+        <button mat-raised-button (click)="addTemplate()" class="add">Add Template</button>
+        <div formArrayName="templates" class="template-wrapper" *ngFor="let template of test.controls['templates'].value; let i = index">
+          <mat-form-field>
+            <mat-label>Template Name</mat-label>
+            <input matInput formControlName="template" />
+          </mat-form-field>
+
+          <button mat-raised-button (click)="log(template)" class="add">Add Button</button>
+          <div class="buttons-wrapper">
+            <ng-container [formArrayName]="'buttons'" *ngFor="let button of template.buttons">
+              <!-- <ng-container [ngTemplateOutlet]="buttonTemplate" [ngTemplateOutletContext]="button"></ng-container> -->
+              <div class="button-wrapper">
+                <button #removeButton (click)="log(button)" mat-mini-fab color="warn" class="close">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-form-field>
+                  <mat-label>Text:</mat-label>
+                  <input matInput [formControlName]="'text'" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Entry:</mat-label>
+                  <input matInput [formControlName]="'entry'" />
+                </mat-form-field>
+
+                <mat-form-field class="textarea">
+                  <mat-label>Styles:</mat-label>
+                  <textarea matInput [formControlName]="'styles'"></textarea>
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section class="preview">
+      <textarea>{{ json }}</textarea>
+    </section>
+  </div>
+
+  <!-- <ng-template #buttonTemplate let-button="buttons">
+    <div class="button-wrapper">
+      <button #removeButton (click)="log(button)" mat-mini-fab color="warn" class="close">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-form-field>
+        <mat-label>Text:</mat-label>
+        <input matInput formControlName="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Entry:</mat-label>
+        <input matInput formControlName="entry" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Styles:</mat-label>
+        <input matInput formControlName="styles" />
+      </mat-form-field>
+    </div>
+  </ng-template> -->
+</mat-card>

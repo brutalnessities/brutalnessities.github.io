@@ -1,0 +1,97 @@
+[
+  {
+    "template": "srp",
+    "style": "stacked",
+    "buttons": [
+      {
+        "text": "Start My Purchase",
+        "entry": "/",
+        "styles": {
+          "button": {
+            "background": "rgb(0 113 178)",
+            "color": "rgb(255 255 255)",
+            "font-weight": "700",
+            "button-height": "250px",
+            "border-radius": "3px",
+            "margin-bottom": "8px"
+          }
+        }
+      },
+      {
+        "text": "Instant Trade Offer",
+        "entry": "trade-in",
+        "styles": {
+          "button": {
+            "background": "rgb(0 113 178)",
+            "color": "rgb(255 255 255)",
+            "font-weight": "700",
+            "button-height": "250px",
+            "border-radius": "3px",
+            "margin-bottom": "8px"
+          }
+        }
+      },
+      {
+        "text": "Prequalify Online - No Impact to Credit Score",
+        "entry": "prequalification",
+        "styles": {
+          "button": {
+            "background": "rgb(0 113 178)",
+            "color": "rgb(255 255 255)",
+            "font-weight": "700",
+            "button-height": "250px",
+            "border-radius": "3px",
+            "margin-bottom": "8px"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "template": "vdp",
+    "style": "stacked",
+    "buttons": [
+      {
+        "text": "Start My Purchase",
+        "styles": {
+          "button": {
+            "background": "red",
+            "color": "rgb(255 255 255)",
+            "font-weight": "700",
+            "button-height": "250px",
+            "border-radius": "3px",
+            "margin-bottom": "8px"
+          }
+        }
+      },
+      {
+        "text": "Instant Trade Offer",
+        "entry": "trade-in",
+        "styles": {
+          "button": {
+            "background": "orange",
+            "color": "rgb(255 255 255)",
+            "font-weight": "700",
+            "button-height": "250px",
+            "border-radius": "3px",
+            "margin-bottom": "8px"
+          }
+        }
+      },
+      {
+        "text": "Prequalify Online - No Impact to Credit Score",
+        "entry": "prequalification",
+        "styles": {
+          "button": {
+            "background": "yellow",
+            "color": "rgb(255 255 255)",
+            "font-weight": "700",
+            "button-height": "250px",
+            "border-radius": "3px",
+            "margin-bottom": "8px"
+          }
+        }
+      }
+    ]
+  }
+]

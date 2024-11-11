@@ -1,5 +1,5 @@
-import { Component, Host, HostListener, OnInit } from '@angular/core';
-import { BehaviorSubject, filter, Observable, Subject } from 'rxjs';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Food, Grid, Snake, SnakeSegment, Tenant, Cell } from './types';
 import { Coordinate, Direction } from '../../shared/lib/types';
 
@@ -203,7 +203,7 @@ export class SnakeComponent implements OnInit {
         const { tail, prev, curr } = segment;
 
         if (head && this.checkCollision(segment)) {
-          console.error('💀💀💀💀');
+          console.error('💀💀💀💀', this.snake);
           this._gridArray[curr.x][curr.y].tenant = undefined; 
           this._gridArray[curr.x][curr.y].style = JSON.parse(
             JSON.stringify({ 'background-color': 'red' })
@@ -218,7 +218,6 @@ export class SnakeComponent implements OnInit {
           this.score++;
           this.spawnFood();
           this.addSegment();
-          console.warn('🍔🍔🍔');
         }
 
         // clear the prev position
@@ -233,7 +232,6 @@ export class SnakeComponent implements OnInit {
         if (!head) {
           x = this.snake.body[i - 1].prev.x;
           y = this.snake.body[i - 1].prev.y;
-          segment.direction = this.snake.body[i - 1].direction;
         }
 
         // set the new position
@@ -313,7 +311,5 @@ export class SnakeComponent implements OnInit {
     } else if (direction === Direction.Right && head.direction !== Direction.Left) {
       head.direction = Direction.Right;
     }
-
-    console.log('🔑🔑🔑', event.key);
   }
 }

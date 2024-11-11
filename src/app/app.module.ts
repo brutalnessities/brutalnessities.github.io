@@ -5,6 +5,7 @@ import { ConfigBuilderComponent } from './routes/config-builder/config-builder.c
 import { TestComponent } from './routes/test/test.component';
 import { SharedModule } from './shared/shared.module';
 import { HeaderComponent } from "./shared/header/header.component";
+import { HomeComponent } from './routes/home/home.component';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { HeaderComponent } from "./shared/header/header.component";
     SnakeComponent,
     TestComponent,
     ConfigBuilderComponent,
+    HomeComponent,
   ],
   imports: [SharedModule, HeaderComponent],
   exports: [SharedModule],

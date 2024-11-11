@@ -3,6 +3,7 @@
     color: white
     font-weight: bolder
     width: 100%
+    z-index: 1000
 
     h1
         text-align: center
@@ -24,6 +25,20 @@
     &.close
         display: none
         animation: sticky .5s ease reverse
+
+.close
+    z-index: 1000
+    position: fixed
+    top: 0
+    right: 0
+    margin: 1em
+    padding: 0.35em
+    color: white
+    border-radius: 50%
+    background: #4e4c63
+    &:hover
+        background: #544eff
+        border-radius: 50%
 
 @keyframes sticky
     from
