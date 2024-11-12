@@ -17,7 +17,7 @@ export class ConfigBuilderComponent implements OnInit {
           new FormGroup({
             text: new FormControl<string>('', []),
             entry: new FormControl<string>('', []),
-            styles: new FormControl<string>('', []),
+            styles: new FormControl<string | any>('', []),
           }),
         ]),
       }),
@@ -31,7 +31,20 @@ export class ConfigBuilderComponent implements OnInit {
   }
 
   get json() {
-    const value = this.config.value;
+    const value = this.config.controls.templates.value.map((one) => {
+      return {
+        template: one.template,
+        style: one.style,
+        buttons: !one.buttons ? [] : one.buttons.map((two) => {
+          return {
+            text: two.text,
+            entry: two.entry,
+            styles: JSON.parse(two.styles),
+            };
+          }
+        ),
+      }
+    });
     return JSON.stringify(value, null, 2);
     // return JSON.stringify(this.config, null, 2);
   }
