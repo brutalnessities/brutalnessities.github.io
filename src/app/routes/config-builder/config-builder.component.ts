@@ -17,7 +17,7 @@ export class ConfigBuilderComponent implements OnInit {
           new FormGroup({
             text: new FormControl<string>('', []),
             entry: new FormControl<string>('', []),
-            styles: new FormControl<string | any>('', []),
+            styles: new FormControl<string>('', []),
           }),
         ]),
       }),
@@ -52,7 +52,7 @@ export class ConfigBuilderComponent implements OnInit {
                 return this.formBuilder.group({
                   text: two.text,
                   entry: two.entry ?? '/',
-                  styles: two.styles,
+                  styles: JSON.stringify(two.styles, null, 2),
                 });
               })
             ),
