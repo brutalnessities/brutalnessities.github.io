@@ -1,68 +1,54 @@
-<mat-card>
+<!-- <mat-card> -->
   <p>config-builder works!</p>
   <div class="content">
-    <section class="config">
+    <mat-card class="config">
       <form [formGroup]="test">
         <button mat-raised-button (click)="addTemplate()" class="add">Add Template</button>
-        <div formArrayName="templates" class="template-wrapper" *ngFor="let template of test.controls['templates'].value; let i = index">
-          <mat-form-field>
-            <mat-label>Template Name</mat-label>
-            <input matInput formControlName="template" />
-          </mat-form-field>
 
-          <button mat-raised-button (click)="log(template)" class="add">Add Button</button>
-          <div class="buttons-wrapper">
-            <ng-container [formArrayName]="'buttons'" *ngFor="let button of template.buttons">
-              <!-- <ng-container [ngTemplateOutlet]="buttonTemplate" [ngTemplateOutletContext]="button"></ng-container> -->
-              <div class="button-wrapper">
-                <button #removeButton (click)="log(button)" mat-mini-fab color="warn" class="close">
-                  <mat-icon>close</mat-icon>
-                </button>
-                <mat-form-field>
-                  <mat-label>Text:</mat-label>
-                  <input matInput [formControlName]="'text'" />
-                </mat-form-field>
+        <!-- TEMPLATES -->
+        <ng-container [formArrayName]="'templates'" *ngFor="let template of config; let i = index">
+          <div class="template-wrapper" formGroupName="{{ i }}">
+            <mat-form-field>
+              <mat-label>Template Name</mat-label>
+              <input matInput formControlName="template" />
+            </mat-form-field>
 
-                <mat-form-field>
-                  <mat-label>Entry:</mat-label>
-                  <input matInput [formControlName]="'entry'" />
-                </mat-form-field>
+            <!-- BUTTONS -->
+            <div [formArrayName]="'buttons'" class="buttons-wrapper">
+              <ng-container formGroupName="{{ j }}" *ngFor="let button of template.buttons; let j = index">
+                <div class="button-wrapper">
+                  <button #removeButton (click)="log(button)" mat-mini-fab color="warn" class="close">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <mat-form-field>
+                    <mat-label>Text:</mat-label>
+                    <input matInput formControlName="text" />
+                  </mat-form-field>
 
-                <mat-form-field class="textarea">
-                  <mat-label>Styles:</mat-label>
-                  <textarea matInput [formControlName]="'styles'"></textarea>
-                </mat-form-field>
-              </div>
-            </ng-container>
+                  <mat-form-field>
+                    <mat-label>Entry:</mat-label>
+                    <input matInput formControlName="entry" />
+                  </mat-form-field>
+
+                  <mat-form-field class="textarea">
+                    <mat-label>Styles:</mat-label>
+                    <textarea matInput formControlName="styles"></textarea>
+                  </mat-form-field>
+
+                  <button #addButton (click)="log(button)" mat-mini-fab color="warn" class="add">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </ng-container>
+            </div>
+            <button mat-raised-button (click)="log(template)" class="add">Add Button</button>
           </div>
-        </div>
+        </ng-container>
       </form>
-    </section>
+    </mat-card>
 
-    <section class="preview">
+    <mat-card class="preview">
       <textarea>{{ json }}</textarea>
-    </section>
+    </mat-card>
   </div>
-
-  <!-- <ng-template #buttonTemplate let-button="buttons">
-    <div class="button-wrapper">
-      <button #removeButton (click)="log(button)" mat-mini-fab color="warn" class="close">
-        <mat-icon>close</mat-icon>
-      </button>
-      <mat-form-field>
-        <mat-label>Text:</mat-label>
-        <input matInput formControlName="text" />
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Entry:</mat-label>
-        <input matInput formControlName="entry" />
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Styles:</mat-label>
-        <input matInput formControlName="styles" />
-      </mat-form-field>
-    </div>
-  </ng-template> -->
-</mat-card>
+<!-- </mat-card> -->

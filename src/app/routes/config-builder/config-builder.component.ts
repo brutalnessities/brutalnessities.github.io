@@ -21,80 +21,47 @@ export class ConfigBuilderComponent implements OnInit {
           }),
         ]),
       }),
-    ])
+    ]),
   });
-
+  
   config = mock;
+
   constructor(private formBuilder: FormBuilder) {
     console.log(this.config);
   }
 
   get json() {
-    // const value = this.test.value;
-    // return JSON.stringify(value, null, 2);
-    return JSON.stringify(this.config, null, 2);
+    const value = this.test.value;
+    return JSON.stringify(value, null, 2);
+    // return JSON.stringify(this.config, null, 2);
   }
-  
+
   stringify(value: any) {
     return JSON.stringify(value, null, 2);
   }
-  
-  ngOnInit() {
-    // this.config.forEach((one) => {
-    //   (this.test.controls['templates'] as FormArray).push(
-    //     new FormGroup({
-    //       template: new FormControl<string>(one.template, []),
-    //       style: new FormControl<string>(one.style, []),
-    //       buttons: new FormArray(
-    //         one.buttons.map((two) => {
-    //           return new FormGroup({
-    //             text: new FormControl<string>(two.text, []),
-    //             entry: new FormControl<string>(two.entry ?? '/', []),
-    //             styles: new FormControl<string | any>(two.styles, []),
-    //           });
-    //         })
-    //       ),
-    //     })
-    //   );
-    // });
 
+  ngOnInit() {
     this.test = this.formBuilder.group({
       templates: this.formBuilder.array(
         this.config.map((one) => {
           return this.formBuilder.group({
-            template: [one.template],
-            style: [one.style],
+            template: one.template,
+            style: one.style,
             buttons: this.formBuilder.array(
               one.buttons.map((two) => {
                 return this.formBuilder.group({
-                  text: [two.text],
-                  entry: [two.entry ?? '/'],
-                  styles: [two.styles],
+                  text: two.text,
+                  entry: two.entry ?? '/',
+                  styles: two.styles,
                 });
               })
             ),
           });
         })
-      )
+      ),
     });
 
-    console.log(this.test.value);
-
-    // this.test.patchValue({
-    //   templates: this.config.map((one) => {
-    //     return {
-    //       template: one.template,
-    //       style: one.style,
-    //       buttons: one.buttons.map((two) => {
-    //         return {
-    //           text: two.text,
-    //           entry: two.entry ?? '/',
-    //           styles: two.styles,
-    //         };
-    //       }),
-    //     };
-    //   }),
-    // });
+    console.log(this.test);
 
     this.test.valueChanges.subscribe((value) => {
       console.log(value);

@@ -1,3 +1,6 @@
+:host
+    padding: 2em
+
 .content
     display: flex
     .config,
@@ -5,20 +8,33 @@
         flex: 1
 
 .template-wrapper
-    border: 10px solid red
+    display: flex
+    flex-direction: column
+    border: 10px inset orange
+    outline: 4px outset aliceblue
+    background-color: rgba(orange, 0.50)
     margin: 1em
     padding: 1em
 
 .button-wrapper
+    margin: 1em auto 2em
     padding: 1em
-    background-color: rgba(orange, 0.5)
+    background-color: #67000040
+    outline: 5px inset aliceblue
+    border: 2px solid #c30000
     display: flex
     flex-direction: column
     textarea
        height: 250px
+    button
+        margin-bottom: 1.5em
+        &.add
+            margin-bottom: 0
+            align-self: flex-end
 
 .preview
     display: flex
     border: 10px solid green
     textarea
+        padding: 2em
         flex: 1
