@@ -2,11 +2,11 @@
   <p>config-builder works!</p>
   <div class="content">
     <mat-card class="config">
-      <form [formGroup]="test">
+      <form [formGroup]="config">
         <button mat-raised-button (click)="addTemplate()" class="add">Add Template</button>
 
         <!-- TEMPLATES -->
-        <ng-container [formArrayName]="'templates'" *ngFor="let template of config; let i = index">
+        <ng-container [formArrayName]="'templates'" *ngFor="let template of default; let i = index">
           <div class="template-wrapper" formGroupName="{{ i }}">
             <mat-form-field>
               <mat-label>Template Name</mat-label>

@@ -8,7 +8,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
   styleUrl: './config-builder.component.sass',
 })
 export class ConfigBuilderComponent implements OnInit {
-  test = new FormGroup({
+  config = new FormGroup({
     templates: new FormArray([
       new FormGroup({
         template: new FormControl<string>('', []),
@@ -24,14 +24,14 @@ export class ConfigBuilderComponent implements OnInit {
     ]),
   });
   
-  config = mock;
+  default = mock;
 
   constructor(private formBuilder: FormBuilder) {
-    console.log(this.config);
+    console.log(this.default);
   }
 
   get json() {
-    const value = this.test.value;
+    const value = this.config.value;
     return JSON.stringify(value, null, 2);
     // return JSON.stringify(this.config, null, 2);
   }
@@ -41,9 +41,9 @@ export class ConfigBuilderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.test = this.formBuilder.group({
+    this.config = this.formBuilder.group({
       templates: this.formBuilder.array(
-        this.config.map((one) => {
+        this.default.map((one) => {
           return this.formBuilder.group({
             template: one.template,
             style: one.style,
@@ -61,9 +61,9 @@ export class ConfigBuilderComponent implements OnInit {
       ),
     });
 
-    console.log(this.test);
+    console.log(this.config);
 
-    this.test.valueChanges.subscribe((value) => {
+    this.config.valueChanges.subscribe((value) => {
       console.log(value);
     });
   }
