@@ -3,17 +3,22 @@
 
 .content
     display: flex
+    gap: 2em
     .config,
-    .preview
+    .json-preview
         flex: 1
 
-.template-wrapper
+    form
+        gap: 4em
+        display: flex
+        flex-direction: column
+
+.config-wrapper
     display: flex
     flex-direction: column
     border: 10px inset orange
     outline: 4px outset aliceblue
     background-color: rgba(orange, 0.50)
-    margin: 1em
     padding: 1em
 
 .button-wrapper
@@ -25,16 +30,47 @@
     display: flex
     flex-direction: column
     textarea
-       height: 250px
+        height: 250px
     button
         margin-bottom: 1.5em
         &.add
             margin-bottom: 0
             align-self: flex-end
 
-.preview
-    display: flex
+.json-preview
     border: 10px solid green
     textarea
         padding: 2em
         flex: 1
+
+.preview
+    border: 10px solid blue
+    padding: 2em
+    h4
+        align-self: start
+
+    .templates
+        display: flex
+        flex-direction: column
+        // gap: 2em
+
+    .template
+        border: 2px solid #00000040
+        display: flex
+        flex-wrap: wrap
+        flex-direction: column
+        align-items: center
+        padding: 2em
+        border-radius: 8px
+        border: 3px dotted black
+        background-color: #6cc5ff5c
+
+    .buttons
+        display: flex
+        width: 100%
+
+        button
+            flex: 1
+
+    h4 + .template
+        margin-bottom: 4em

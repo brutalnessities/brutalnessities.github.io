@@ -46,11 +46,14 @@ export class ConfigBuilderComponent implements OnInit {
       }
     });
     return JSON.stringify(value, null, 2);
-    // return JSON.stringify(this.config, null, 2);
   }
 
   stringify(value: any) {
     return JSON.stringify(value, null, 2);
+  }
+
+  get parsed() {
+    return JSON.parse(this.json);
   }
 
   ngOnInit() {

@@ -1,57 +1,63 @@
-<!-- <mat-card> -->
-  <p>config-builder works!</p>
-  <div class="content">
-    <mat-card class="config">
-      <form [formGroup]="config">
-        <button mat-raised-button (click)="addTemplate()" class="add">Add Template</button>
+<div class="content">
+  <mat-card class="config">
+    <form [formGroup]="config">
+      <!-- <button mat-raised-button (click)="addTemplate()" class="add">Add Template</button> -->
 
-        <!-- TEMPLATES -->
-        <ng-container [formArrayName]="'templates'" *ngFor="let template of default; let i = index">
-          <div class="template-wrapper" formGroupName="{{ i }}">
-            <mat-form-field>
-              <mat-label>Template Name</mat-label>
-              <input matInput formControlName="template" />
-            </mat-form-field>
+      <!-- TEMPLATES -->
+      <ng-container [formArrayName]="'templates'" *ngFor="let template of default; let i = index">
+        <div class="config-wrapper" formGroupName="{{ i }}">
+          <mat-form-field>
+            <mat-label>Template Name</mat-label>
+            <input matInput formControlName="template" />
+          </mat-form-field>
 
-            <!-- BUTTONS -->
-            <div [formArrayName]="'buttons'" class="buttons-wrapper">
-              <ng-container formGroupName="{{ j }}" *ngFor="let button of template.buttons; let j = index">
-                <div class="button-wrapper">
-                  <button #removeButton (click)="log(button)" mat-mini-fab color="warn" class="close">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                  <mat-form-field>
-                    <mat-label>Text:</mat-label>
-                    <input matInput formControlName="text" />
-                  </mat-form-field>
+          <!-- BUTTONS -->
+          <div [formArrayName]="'buttons'" class="buttons-wrapper">
+            <ng-container formGroupName="{{ j }}" *ngFor="let button of template.buttons; let j = index">
+              <div class="button-wrapper">
+                <button #removeButton (click)="log(button)" mat-mini-fab color="warn" class="close">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-form-field>
+                  <mat-label>Text:</mat-label>
+                  <input matInput formControlName="text" />
+                </mat-form-field>
 
-                  <mat-form-field>
-                    <mat-label>Entry:</mat-label>
-                    <input matInput formControlName="entry" />
-                  </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Entry:</mat-label>
+                  <input matInput formControlName="entry" />
+                </mat-form-field>
 
-                  <mat-form-field class="textarea">
-                    <mat-label>Styles:</mat-label>
-                    <textarea matInput formControlName="styles"></textarea>
-                  </mat-form-field>
+                <mat-form-field class="textarea">
+                  <mat-label>Styles:</mat-label>
+                  <textarea matInput formControlName="styles"></textarea>
+                </mat-form-field>
 
-                  <button #addButton (click)="log(button)" mat-mini-fab color="warn" class="add">
-                    <mat-icon>add</mat-icon>
-                  </button>
-                </div>
-              </ng-container>
-            </div>
-            <button mat-raised-button (click)="log(template)" class="add">Add Button</button>
+                <button #addButton (click)="log(button)" mat-mini-fab color="warn" class="add">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </ng-container>
           </div>
-        </ng-container>
-      </form>
-    </mat-card>
+        </div>
+      </ng-container>
+    </form>
+  </mat-card>
 
-    <mat-card class="preview">
-      <textarea>{{ json }}</textarea>
-    </mat-card>
+  <mat-card class="json-preview">
+    <textarea>{{ json }}</textarea>
+  </mat-card>
 
-    <mat-card class="preview">
-    </mat-card>
-  </div>
-<!-- </mat-card> -->
+  <mat-card class="preview">
+    <div class="templates">
+      <ng-container *ngFor="let template of parsed">
+        <h4>{{ template.template }}</h4>
+        <div class="template">
+          <div class="buttons" *ngFor="let button of template.buttons">
+            <button [ngStyle]="button.styles.button">{{ button.text }}</button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+</div>
