@@ -25,7 +25,15 @@
 
                 <mat-form-field>
                   <mat-label>Entry:</mat-label>
-                  <input matInput formControlName="entry" />
+                  <mat-select formControlName="entry">
+                    <mat-option [value]="'/'">default</mat-option>
+                    <mat-option [value]="'estimator'">estimator</mat-option>
+                    <mat-option [value]="'accessories'">accessories</mat-option>
+                    <mat-option [value]="'trade-in'">trade-in</mat-option>
+                    <mat-option [value]="'finance'">finance</mat-option>
+                    <mat-option [value]="'eprice'">eprice</mat-option>
+                    <mat-option [value]="'protection'">protection</mat-option>
+                  </mat-select>
                 </mat-form-field>
 
                 <mat-form-field class="textarea">
@@ -50,14 +58,14 @@
 
   <mat-card class="preview">
     <div class="templates">
-      <ng-container *ngFor="let template of parsed">
+      <div *ngFor="let template of parsed" class="template">
         <h4>{{ template.template }}</h4>
-        <div class="template">
+        <div class="buttons-wrapper">
           <div class="buttons" *ngFor="let button of template.buttons">
             <button [ngStyle]="button.styles.button">{{ button.text }}</button>
           </div>
         </div>
-      </ng-container>
+      </div>
     </div>
   </mat-card>
 </div>

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatTreeModule,
     ReactiveFormsModule,
     FormsModule,
-    
+    MatInputModule,
+    MatSelectModule,
   ],
   exports: [
     CommonModule,
@@ -34,6 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatTreeModule,
     ReactiveFormsModule,
     FormsModule,
+    MatInputModule,
+    MatSelectModule,
   ],
 })
 export class SharedModule {}
