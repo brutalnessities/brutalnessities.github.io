@@ -43,8 +43,10 @@ export class HeaderComponent {
     if (window.scrollY > this._headerHeight + 300) {
       // if (!this.isSticky) console.log('💦💦💦', this);
       this.isSticky = true;
+      this.open = false;
     } else {
       this.isSticky = false;
+      this.open = true;
       // window.scrollTo(0, 0);
     }
   }

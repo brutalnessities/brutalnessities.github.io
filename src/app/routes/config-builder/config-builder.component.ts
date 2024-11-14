@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import mock from './mock.json';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -7,7 +7,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
   templateUrl: './config-builder.component.html',
   styleUrl: './config-builder.component.sass',
 })
-export class ConfigBuilderComponent implements OnInit {
+export class ConfigBuilderComponent implements OnInit, AfterViewInit {
   config = new FormGroup({
     templates: new FormArray([
       new FormGroup({
@@ -23,8 +23,10 @@ export class ConfigBuilderComponent implements OnInit {
       }),
     ]),
   });
-  
+
   default = mock;
+  defaultTemplate = mock[0];
+  defaultButton = mock[0].buttons[0];
 
   constructor(private formBuilder: FormBuilder) {
     console.log(this.default);
@@ -35,15 +37,16 @@ export class ConfigBuilderComponent implements OnInit {
       return {
         template: one.template,
         style: one.style,
-        buttons: !one.buttons ? [] : one.buttons.map((two) => {
-          return {
-            text: two.text,
-            entry: two.entry,
-            styles: JSON.parse(two.styles),
-            };
-          }
-        ),
-      }
+        buttons: !one.buttons
+          ? []
+          : one.buttons.map((two) => {
+              return {
+                text: two.text,
+                entry: two.entry,
+                styles: JSON.parse(two.styles),
+              };
+            }),
+      };
     });
     return JSON.stringify(value, null, 2);
   }
@@ -84,15 +87,60 @@ export class ConfigBuilderComponent implements OnInit {
     });
   }
 
-  addTemplate() {
-    console.log('add template');
+  ngAfterViewInit() {
+    const current = this.config.value;
+    this.config.patchValue(current);
   }
 
-  addButton() {
-    console.log('add button');
+  removeButton(i: number, j: number) {
+    console.log('delete button');
+    console.log(i);
+    this.config.controls.templates.controls[i].controls.buttons.removeAt(j);
+    this.ngAfterViewInit();
+  }
+
+  value(event: any) {
+    console.log(event);
+    console.log(this.config.value);
+  }
+
+  addButton(i: number, j: number) {
+    console.log(i, 'add button', j);
+    this.config.controls.templates.controls[i].controls.buttons.push(
+      new FormGroup({
+        text: new FormControl<string>('NEW BUTTON', []),
+        entry: new FormControl<string>('/', []),
+        styles: new FormControl<string | any>('{"button": {}}', []),
+      })
+    );
+    this.config.touched;
+
+    this.ngAfterViewInit();
   }
 
   log(e: any) {
     console.log(e);
+  }
+
+  addTemplate() {
+    this.config.controls.templates.push(
+      new FormGroup({
+        template: new FormControl<string>('New Template', []),
+        style: new FormControl<string>('stacked', []),
+        buttons: new FormArray([
+          new FormGroup({
+            text: new FormControl<string>('', []),
+            entry: new FormControl<string>('/', []),
+            styles: new FormControl<string | any>('{"button": {}}', []),
+          }),
+        ]),
+      })
+    );
+    this.ngAfterViewInit();
+  }
+
+  removeTemplate(i: number) {
+    this.config.controls.templates.removeAt(i);
+    this.ngAfterViewInit();
   }
 }

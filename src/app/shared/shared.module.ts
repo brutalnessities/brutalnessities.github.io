@@ -10,6 +10,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatExpansionModule,
   ],
   exports: [
     CommonModule,
@@ -41,6 +43,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatExpansionModule,
   ],
 })
 export class SharedModule {}
