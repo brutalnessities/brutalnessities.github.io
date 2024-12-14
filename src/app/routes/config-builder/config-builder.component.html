@@ -7,78 +7,80 @@
         [formArrayName]="'templates'"
         *ngFor="let template of config.controls.templates.controls; let i = index"
       >
-        <mat-accordion>
-          <mat-expansion-panel [expanded]="false" class="config-wrapper" formGroupName="{{ i }}">
-            <mat-expansion-panel-header>
-              <button mat-mini-fab color="warn" class="close" (click)="removeTemplate(i)">
-                <mat-icon>close</mat-icon>
-              </button>
-              <h3>{{ template.controls.template.value?.toLocaleUpperCase() }}</h3>
-            </mat-expansion-panel-header>
-            <mat-form-field subscriptSizing="dynamic">
-              <mat-label>Template Name</mat-label>
-              <input matInput formControlName="template" (click)="$event.stopPropagation()" />
-            </mat-form-field>
+        <div>
+          <mat-accordion>
+            <mat-expansion-panel [expanded]="i === 0" class="config-wrapper" formGroupName="{{ i }}">
+              <mat-expansion-panel-header>
+                <button mat-mini-fab color="warn" class="close" (click)="removeTemplate(i)">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <h3>{{ template.controls.template.value?.toLocaleUpperCase() }}</h3>
+              </mat-expansion-panel-header>
+              <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Template Name</mat-label>
+                <input matInput formControlName="template" (click)="$event.stopPropagation()" />
+              </mat-form-field>
 
-            <!-- BUTTONS -->
-            <div [formArrayName]="'buttons'">
-              <ng-container
-                formGroupName="{{ j }}"
-                *ngFor="let button of template.controls.buttons.controls; let j = index"
-              >
-                <div class="button-wrapper">
-                  <button (click)="removeButton(i, j)" mat-mini-fab color="warn" class="close">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                  <mat-form-field>
-                    <mat-label>Text:</mat-label>
-                    <input matInput formControlName="text" />
-                  </mat-form-field>
+              <!-- BUTTONS -->
+              <div [formArrayName]="'buttons'">
+                <ng-container
+                  formGroupName="{{ j }}"
+                  *ngFor="let button of template.controls.buttons.controls; let j = index"
+                >
+                  <div class="button-wrapper">
+                    <button (click)="removeButton(i, j)" mat-mini-fab color="warn" class="close">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                    <mat-form-field>
+                      <mat-label>Text:</mat-label>
+                      <input matInput formControlName="text" />
+                    </mat-form-field>
 
-                  <mat-form-field>
-                    <mat-label>Entry:</mat-label>
-                    <mat-select formControlName="entry">
-                      <mat-option [value]="'/'">default</mat-option>
-                      <mat-option [value]="'estimator'">estimator</mat-option>
-                      <mat-option [value]="'accessories'">accessories</mat-option>
-                      <mat-option [value]="'trade-in'">trade-in</mat-option>
-                      <mat-option [value]="'finance'">finance</mat-option>
-                      <mat-option [value]="'eprice'">eprice</mat-option>
-                      <mat-option [value]="'protection'">protection</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                    <mat-form-field>
+                      <mat-label>Entry:</mat-label>
+                      <mat-select formControlName="entry">
+                        <mat-option [value]="'/'">default</mat-option>
+                        <mat-option [value]="'estimator'">estimator</mat-option>
+                        <mat-option [value]="'accessories'">accessories</mat-option>
+                        <mat-option [value]="'trade-in'">trade-in</mat-option>
+                        <mat-option [value]="'finance'">finance</mat-option>
+                        <mat-option [value]="'eprice'">eprice</mat-option>
+                        <mat-option [value]="'protection'">protection</mat-option>
+                      </mat-select>
+                    </mat-form-field>
 
-                  <mat-form-field class="textarea">
-                    <mat-label>Styles:</mat-label>
-                    <textarea matInput formControlName="styles"></textarea>
-                  </mat-form-field>
+                    <mat-form-field class="textarea">
+                      <mat-label>Styles:</mat-label>
+                      <textarea matInput formControlName="styles" pretty-json></textarea>
+                    </mat-form-field>
 
-                  <button (click)="addButton(i, j)" mat-mini-fab color="warn" class="add">
-                    <mat-icon>add</mat-icon>
-                  </button>
-                </div>
-              </ng-container>
-            </div>
-            <!-- </div> -->
-          </mat-expansion-panel>
-        </mat-accordion>
+                    <button (click)="addButton(i, j)" mat-mini-fab color="warn" class="add">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </ng-container>
+              </div>
+              <!-- </div> -->
+            </mat-expansion-panel>
+          </mat-accordion>
 
-        <ng-container [ngTemplateOutlet]="divider"></ng-container>
+          <ng-container [ngTemplateOutlet]="divider"></ng-container>
+        </div>
       </ng-container>
     </form>
   </mat-card>
 
-  <mat-card class="json-preview">
-    <textarea (blur)="($event)">{{ stringify(config.value) }}</textarea>
+  <mat-card [formGroup]="config" class="json-preview">
+    <textarea (blur)="log($event)" form>{{ config.value | json }}</textarea>
   </mat-card>
 
   <mat-card class="preview">
     <div class="templates">
-      <div *ngFor="let template of parsed" class="template">
-        <h4>{{ template.template }}</h4>
+      <div *ngFor="let template of config.controls.templates.controls" class="template">
+        <h4>{{ template.controls.template.value }}</h4>
         <div class="buttons-wrapper">
-          <div class="buttons" *ngFor="let button of template.buttons">
-            <button [ngStyle]="button.styles.button">{{ button.text }}</button>
+          <div class="buttons" *ngFor="let button of template.controls.buttons.controls">
+            <button [ngStyle]="button.controls.styles.value.button">{{ button.controls.text.value }}</button>
           </div>
         </div>
       </div>
@@ -89,7 +91,7 @@
 <ng-template #divider>
   <span class="add-template-line">
     <span class="line"></span>
-    <button (click)="addTemplate()" class="add">+</button>
+    <button (click)="addTemplate()" class="add"><p>+</p></button>
     <span class="line"></span>
   </span>
 </ng-template>

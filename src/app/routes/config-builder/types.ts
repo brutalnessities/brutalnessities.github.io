@@ -4,6 +4,7 @@ export type Config = {
 
 export type Template = {
   template: string;
+  style: string;
   buttons: Button[];
 };
 

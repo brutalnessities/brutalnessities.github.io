@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import mock from './mock.json';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { pairwise, startWith } from 'rxjs';
+import { debounce, debounceTime, filter } from 'rxjs/operators';
+import { Button, Template } from './types';
 
 @Component({
   selector: 'app-config-builder',
@@ -17,7 +20,7 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
           new FormGroup({
             text: new FormControl<string>('', []),
             entry: new FormControl<string>('', []),
-            styles: new FormControl<string | any>('', []),
+            styles: new FormControl<any>({}, []),
           }),
         ]),
       }),
@@ -28,9 +31,7 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
   defaultTemplate = mock[0];
   defaultButton = mock[0].buttons[0];
 
-  constructor(private formBuilder: FormBuilder) {
-    console.log(this.default);
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   get json() {
     const value = this.config.controls.templates.value.map((one) => {
@@ -43,7 +44,7 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
               return {
                 text: two.text,
                 entry: two.entry,
-                styles: JSON.parse(two.styles),
+                styles: two.styles,
               };
             }),
       };
@@ -59,6 +60,10 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
     return JSON.parse(this.json);
   }
 
+  parse(value: string) {
+    return JSON.parse(value);
+  }
+
   ngOnInit() {
     this.config = this.formBuilder.group({
       templates: this.formBuilder.array(
@@ -71,7 +76,7 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
                 return this.formBuilder.group({
                   text: two.text,
                   entry: two.entry ?? '/',
-                  styles: JSON.stringify(two.styles, null, 2),
+                  styles: two.styles,
                 });
               })
             ),
@@ -79,11 +84,22 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
         })
       ),
     });
+    this.config.valueChanges.pipe(
+      startWith(this.config.value),
+      pairwise(),
+      debounceTime(1000),
+      filter(([prev, curr]: [any, any]) => prev !== curr)
+    ).subscribe(([prev, curr]: [any, any]) => {
+      console.log({prev}, {curr});
 
-    console.log(this.config);
-
-    this.config.valueChanges.subscribe((value) => {
-      console.log(value);
+      // patchvalue of all button.styles by parsing them to JSON
+      curr.templates.forEach((template: Template, i: number) => {
+        template.buttons.forEach((button: Button, j: number) => {
+          if (typeof button.styles === 'string') {
+          this.config.controls.templates.controls[i].controls.buttons.controls[j].controls.styles.patchValue(JSON.parse(button.styles));
+          }
+        });
+      });
     });
   }
 
@@ -110,16 +126,20 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
       new FormGroup({
         text: new FormControl<string>('NEW BUTTON', []),
         entry: new FormControl<string>('/', []),
-        styles: new FormControl<string | any>('{"button": {}}', []),
+        styles: new FormControl<any>({ button: {} }, []),
       })
     );
-    this.config.touched;
 
     this.ngAfterViewInit();
   }
 
   log(e: any) {
     console.log(e);
+    const value = e.target.value;
+    console.log(value);
+
+    
+    this.config.patchValue(JSON.parse(value));
   }
 
   addTemplate() {
@@ -131,7 +151,7 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
           new FormGroup({
             text: new FormControl<string>('', []),
             entry: new FormControl<string>('/', []),
-            styles: new FormControl<string | any>('{"button": {}}', []),
+            styles: new FormControl<any>({ button: {} }, []),
           }),
         ]),
       })

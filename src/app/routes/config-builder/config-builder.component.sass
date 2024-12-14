@@ -1,5 +1,7 @@
 :host
     padding: 2em
+    @media screen and (max-width: 650px)
+        padding: 0
 
 .content
     display: flex
@@ -7,9 +9,6 @@
     .config,
     .json-preview
         flex: 1
-
-    .mat-mdc-card
-        max-width: 35%
 
     form
         gap: 2em
@@ -97,31 +96,49 @@
             flex: 1
 
 .add-template-line
+    $color: #00ff6279
+    $color-hover: #00ff00
+
     display: flex
     justify-content: center
     align-items: center
     padding: 0 2em
     margin-bottom: 2em
+    flex-wrap: nowrap
+
+    
     .line
-        $color: #00fff0
         flex: 1
         border-top: 5px outset $color
         border-bottom: 5px outset $color
-        + div:hover
-            $color: #008b00
-            border-top: 5px outset $color
-            border-bottom: 5px outset $color
+    
+        &:has(+ button:hover)
+            border-top: 5px outset $color-hover
+            border-bottom: 5px outset $color-hover
+
+    button:hover + .line
+        border-top: 5px outset $color-hover
+        border-bottom: 5px outset $color-hover
+
     button
-        $color: #00fff0
-        margin: 10px
-        padding: .5em
-        border: 10px outset $color
-        &:hover
-            $color: #008b00
-            outline: 10px outset $color
+        margin: 20px
+        padding: .25em
+        border: 15px outset $color
+        outline: 5px solid transparent
         border-radius: 50%
         font-weight: bolder
         font-size: 50px
         width: 1em
         height: 1em
-        line-height: 1em
+        background-color: transparent
+
+        p
+            margin: -28px -16px
+            color: yellow
+
+        &:hover
+            $color: #008b00
+            outline: 5px inset $color-hover
+            border: 15px outset $color
+            p
+                color: $color-hover
