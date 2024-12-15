@@ -1,4 +1,4 @@
-import { Component, HostListener, Output } from '@angular/core';
+import { Component, HostListener, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../shared.module';
 
 @Component({
@@ -8,7 +8,7 @@ import { SharedModule } from '../shared.module';
   templateUrl: './header.component.html',
   styleUrl: './header.component.sass',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Output() open = true;
   routes = [
     {
@@ -51,6 +51,12 @@ export class HeaderComponent {
     }
   }
 
+  ngOnInit() {
+    // get from local storage
+    const headerOpen = window.localStorage.getItem('headerOpen');
+    this.open = headerOpen ? JSON.parse(headerOpen) : true;
+  }
+
   get headerHeight() {
     return `${this._headerHeight}px`;
   }
@@ -58,6 +64,8 @@ export class HeaderComponent {
   toggleOpen() {
     console.log('⭕⭕⭕');
     this.open = !this.open;
+    // save to local storage
+    window.localStorage.setItem('headerOpen', JSON.stringify(this.open));
     window.postMessage({ type: 'toggleHeader' });
   }
 }

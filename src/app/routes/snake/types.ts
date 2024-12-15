@@ -32,4 +32,4 @@ export type Cell = {
   style?: JSON;
 };
 
-export type Grid = Array<Array<Cell>>;
+export type Grid = Cell[][];
