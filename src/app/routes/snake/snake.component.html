@@ -1,9 +1,7 @@
 <button *ngIf="button.show" (click)="onClick()">{{ button.text }}</button>
 <div class="content" id="grid">
   <div class="score">
-    <p>
-      Score: {{score}}
-    </p>
+    <p>Score: {{ score }}</p>
   </div>
   <div *ngFor="let col of _gridArray; index as i" class="col" id="column">
     <div
@@ -16,4 +14,5 @@
       [ngStyle]="row.style"
     ></div>
   </div>
+  <a id="bug" (click)="log()">🪰</a>
 </div>
