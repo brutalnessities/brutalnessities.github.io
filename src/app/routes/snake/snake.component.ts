@@ -12,8 +12,15 @@ export class SnakeComponent implements OnInit {
   speed = 100;
 
   score = 0;
-
-  padding = 50;
+  
+  highscore = 0;
+  
+  scoreDisplay(value: number) {
+    return value * 100;
+    // return value * Math.floor(this.H);
+  }
+  
+  padding = 100;
 
   minCellSize = 25;
 
@@ -32,7 +39,7 @@ export class SnakeComponent implements OnInit {
 
   destroy$: Subject<void> = new Subject<void>();
 
-  _scale = 1;
+  _scale = 30;
   scaleOf(num?: number): Array<number> {
     return Array(num ?? this._scale)
       .fill(0)
@@ -43,9 +50,9 @@ export class SnakeComponent implements OnInit {
     `${num}px`;
   }
 
-  X: number = 1;
-  Y: number = 1;
-  H: number = 1;
+  X: number = 10;
+  Y: number = 10;
+  H: number = 10;
 
   button = {
     show: true,
@@ -54,15 +61,9 @@ export class SnakeComponent implements OnInit {
 
   selector = '//*[@id="column"][9]//*[@id="cell"][19]';
 
-  /**
-   * @description
-   *  - watch the grid updates and handles game logic
-   */
   ngOnInit() {
     this.resize();
-    // this.grid.pipe(filter((grid) => grid.length > 0)).subscribe((grid) => {
-    //   console.log('🔥🔥🔥', grid);
-    // });
+    this.highscore = +(localStorage.getItem('highscore') ?? 0);
   }
 
   _gridArray: Grid = [];
@@ -84,11 +85,16 @@ export class SnakeComponent implements OnInit {
   }
 
   resize() {
+    if (this.snake.alive) {
+      this.killSnake();
+    }
+
     const pythagorean = (num: number = 0) => {
-      num += this.padding / 2;
+      const height = document.querySelector('app-snake')?.clientHeight;
+      num += this.padding;
       const a = window.innerWidth - num;
-      const b = (document.querySelector('app-snake')?.clientHeight ?? 500) - num;
-      const c = Math.sqrt(a ^ (2 + b) ^ 2);
+      const b = height && height > 500 ? height : 500;
+      const c = Math.sqrt((a ^ 2) + (b ^ 2));
       return { a, b, c };
     };
 
@@ -101,7 +107,6 @@ export class SnakeComponent implements OnInit {
       b = tempObj.b;
       c = tempObj.c;
     }
-
     this.H = c;
     this.X = Math.floor(a / c);
     this.Y = Math.floor(b / c);
@@ -162,7 +167,6 @@ export class SnakeComponent implements OnInit {
       if (this.food.x && this.food.y && !this._gridArray[this.food.x][this.food.y].tenant) {
         this._gridArray[this.food.x][this.food.y].tenant = Tenant.Food;
       }
-
     }, this.speed);
   }
 
@@ -202,15 +206,11 @@ export class SnakeComponent implements OnInit {
       for (let i = this.snake.body.length - 1; i >= 0; i--) {
         const segment = this.snake.body[i];
         const head = segment.id === 0;
-        const { tail, prev, curr } = segment;
+        const { curr } = segment;
 
         if (head) {
           if (this.checkCollision(segment)) {
-            console.log('💀', this.snake);
-            this._gridArray[curr.x][curr.y].tenant = undefined;
-            this._gridArray[curr.x][curr.y].style = JSON.parse(JSON.stringify({ 'background-color': 'red' }));
-            this.snake.alive = false;
-            this.button.show = true;
+            this.killSnake();
             return;
           }
 
@@ -230,12 +230,25 @@ export class SnakeComponent implements OnInit {
     }
   }
 
+  killSnake() {
+    console.log('💀', this.snake);
+    const { x, y } = this.snake.body[0].curr;
+    this._gridArray[x][y].tenant = undefined;
+    this._gridArray[x][y].style = JSON.parse(JSON.stringify({ 'background-color': 'red' }));
+    this.snake.alive = false;
+    this.button.show = true;
+    if (this.score > this.highscore) {
+      this.highscore = this.score;
+      localStorage.setItem('highscore', `${this.score}`);
+    }
+  }
+
   moveSegment(segment: SnakeSegment) {
-    const { id, tail, prev, curr, direction } = segment;
+    const { id, tail, curr } = segment;
 
     // clear the current position
     this._gridArray[curr.x][curr.y].tenant = undefined;
-    
+
     // get the next coordinate
     let { x, y } = this.outOfBoundsWarp(segment);
 
@@ -243,6 +256,10 @@ export class SnakeComponent implements OnInit {
     if (id > 0) {
       x = this.snake.body[id - 1].prev.x;
       y = this.snake.body[id - 1].prev.y;
+    }
+
+    if (id !== 0) {
+      this.snake.body[id].direction = this.snake.body[id - 1].direction;
     }
 
     // set the new position
@@ -278,7 +295,7 @@ export class SnakeComponent implements OnInit {
           x = wasOut ? 0 : x + 1;
           break;
       }
-      
+
       const isOutOfBounds = this.isOutOfBounds(x, y);
       if (isOutOfBounds) {
         return this.outOfBoundsWarp(segment, true);
@@ -306,27 +323,39 @@ export class SnakeComponent implements OnInit {
   @HostListener('document:keydown', ['$event'])
   handleKeyPress(event: KeyboardEvent) {
     if (!this.snake.alive) return;
-    const head = this.snake.body[0];
     const direction = Direction[event.key.replace('Arrow', '') as keyof typeof Direction];
+    const prevDirection = this.snake.body[1].direction;
+    console.log('🔑', direction, prevDirection);
+    console.log('🐍', this.snake);
+    if (direction === prevDirection) return;
+    if (this.snake.body[1].prev === this.snake.body[1].curr) return;
+    const head = this.snake.body[0];
+    head.direction = direction;
 
-    if (direction === Direction.Up && head.direction !== Direction.Down) {
-      head.direction = Direction.Up;
-    } else if (direction === Direction.Down && head.direction !== Direction.Up) {
-      head.direction = Direction.Down;
-    } else if (direction === Direction.Left && head.direction !== Direction.Right) {
-      head.direction = Direction.Left;
-    } else if (direction === Direction.Right && head.direction !== Direction.Left) {
-      head.direction = Direction.Right;
+    const seg = this.snake.body;
+    if (seg[0].direction === opposite(seg[1].direction)) {
+      head.direction = seg[1].direction;
     }
-    
+
     if (!this.checkCollision(head)) {
       this.snake.body[0] = head;
     }
-    // this.moveSegment(head);
   }
-
 
   log() {
     console.log('🤖', this);
   }
 }
+
+const opposite = (dir: Direction) => {
+  switch (dir) {
+    case Direction.Up:
+      return Direction.Down;
+    case Direction.Down:
+      return Direction.Up;
+    case Direction.Left:
+      return Direction.Right;
+    case Direction.Right:
+      return Direction.Left;
+  }
+};

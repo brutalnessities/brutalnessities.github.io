@@ -58,7 +58,7 @@
         "text": "Start My Purchase",
         "styles": {
           "button": {
-            "background": "red",
+            "background": "green",
             "color": "rgb(255 255 255)",
             "font-weight": "700",
             "button-height": "250px",
@@ -73,7 +73,7 @@
         "entry": "trade-in",
         "styles": {
           "button": {
-            "background": "orange",
+            "background": "purple",
             "color": "rgb(255 255 255)",
             "font-weight": "700",
             "button-height": "250px",
@@ -88,7 +88,7 @@
         "entry": "prequalification",
         "styles": {
           "button": {
-            "background": "yellow",
+            "background": "chocolate",
             "color": "rgb(255 255 255)",
             "font-weight": "700",
             "button-height": "250px",

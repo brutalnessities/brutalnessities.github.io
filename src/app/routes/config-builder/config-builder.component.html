@@ -70,10 +70,12 @@
     </form>
   </mat-card>
 
+  <!-- JSON PPREVIEW -->
   <mat-card [formGroup]="config" class="json-preview">
     <textarea (blur)="log($event)" form>{{ config.value | json }}</textarea>
   </mat-card>
 
+  <!-- VISUAL PREVIEW -->
   <mat-card class="preview">
     <div class="templates">
       <div *ngFor="let template of config.controls.templates.controls" class="template">
