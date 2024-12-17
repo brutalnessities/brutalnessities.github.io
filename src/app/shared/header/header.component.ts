@@ -69,3 +69,15 @@ export class HeaderComponent implements OnInit {
     window.postMessage({ type: 'toggleHeader' });
   }
 }
+
+/**
+ * @idea
+ * nest all of the buttons into the visibility button. When click it exands radially with options
+ * 
+ *  ___________
+ * |           |
+ * |    o - O  |
+ * |      / |  |
+ * |     o  o  |
+ * |           |
+ */

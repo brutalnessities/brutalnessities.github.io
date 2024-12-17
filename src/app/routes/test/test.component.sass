@@ -1,3 +1,31 @@
 :host
     margin: 2em
-    display: flex
+    // display: flex
+
+#summary 
+    padding-bottom: 2em
+
+.beautiful
+    animation: bounce 5s infinite alternate
+
+@for $i from 1 through 10
+    .beautiful:nth-child(#{$i})
+        animation-delay: 0.1s * $i
+
+@keyframes bounce
+    0%
+        font-size: 16px
+        font-weight: 300
+        line-height: 1em
+        text-decoration: none
+    50%
+        text-decoration: underline
+    100%
+        font-size: 18px
+        font-weight: 600
+        line-height: calc(1em - 2px)
+        text-decoration: none
+
+.resume
+    background-color: #3e15432b
+    padding: 2em
