@@ -1,7 +1,20 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, Host, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Food, Grid, Snake, SnakeSegment, Tenant, Cell } from './types';
 import { Coordinate, Direction } from '../../shared/lib/types';
+
+const opposite = (dir: Direction) => {
+  switch (dir) {
+    case Direction.Up:
+      return Direction.Down;
+    case Direction.Down:
+      return Direction.Up;
+    case Direction.Left:
+      return Direction.Right;
+    case Direction.Right:
+      return Direction.Left;
+  }
+};
 
 @Component({
   selector: 'app-snake',
@@ -12,14 +25,9 @@ export class SnakeComponent implements OnInit {
   speed = 100;
 
   score = 0;
-  
+
   highscore = 0;
-  
-  scoreDisplay(value: number) {
-    return value * 100;
-    // return value * Math.floor(this.H);
-  }
-  
+
   padding = 100;
 
   minCellSize = 25;
@@ -44,6 +52,11 @@ export class SnakeComponent implements OnInit {
     return Array(num ?? this._scale)
       .fill(0)
       .map((_x: any, i) => i);
+  }
+
+  scoreDisplay(value: number) {
+    return value * 100;
+    // return value * Math.floor(this.H);
   }
 
   px(num: number) {
@@ -125,6 +138,41 @@ export class SnakeComponent implements OnInit {
     console.log('🤯🤯🤯');
   }
 
+  /** 
+   * @Keyboard_Controls 
+   * */
+  @HostListener('document:keydown.arrowleft', ['$event'])
+  handleArrowLeft() {
+    this.funcDirection(Direction.Left);
+  }
+
+  @HostListener('document:keydown.arrowright', ['$event'])
+  handleArrowRight() {
+    this.funcDirection(Direction.Right);
+  }
+
+  @HostListener('document:keydown.arrowup', ['$event'])
+  handleArrowUp() {
+    this.funcDirection(Direction.Up);
+  }
+
+  @HostListener('document:keydown.arrowdown', ['$event'])
+  handleArrowDown() {
+    this.funcDirection(Direction.Down);
+  }
+
+  funcDirection(direction: Direction) {
+    if (this.checkCollision(this.future(direction))) {
+      this.SNAKE_BRAIN();
+    }
+    if (!this.snake.alive) return;
+    const head = this.snake.body[0];
+    if (head.direction !== opposite(direction)) {
+      head.direction = direction;
+    }
+  }
+  /** /////////////////////////////////////////////////// */
+
   getRandomNumberInRange(min: number, max: number) {
     return Math.random() * (max - min) + min;
   }
@@ -196,9 +244,32 @@ export class SnakeComponent implements OnInit {
     }
   }
 
-  checkCollision(segment: SnakeSegment): boolean {
-    const { x, y } = segment.curr;
+  checkCollision(coord: Coordinate): boolean {
+    const { x, y } = coord;
+    if (x < 0 || x >= this.X || y < 0 || y >= this.Y) {
+      return true;
+    }
     return this._gridArray[x][y].tenant === Tenant.Snake;
+  }
+
+  future(direction: Direction): Coordinate {
+    const head = this.snake.body[0];
+    let { x, y } = head.curr;
+    switch (direction) {
+      case Direction.Up:
+        y -= 1;
+        break;
+      case Direction.Down:
+        y += 1;
+        break;
+      case Direction.Left:
+        x -= 1;
+        break;
+      case Direction.Right:
+        x += 1;
+        break;
+    }
+    return { x, y };
   }
 
   SNAKE_BRAIN() {
@@ -209,7 +280,7 @@ export class SnakeComponent implements OnInit {
         const { curr } = segment;
 
         if (head) {
-          if (this.checkCollision(segment)) {
+          if (this.checkCollision(segment.curr)) {
             this.killSnake();
             return;
           }
@@ -221,7 +292,6 @@ export class SnakeComponent implements OnInit {
             this.addSegment();
           }
         }
-
         this.moveSegment(segment);
       }
     } catch (error) {
@@ -243,7 +313,7 @@ export class SnakeComponent implements OnInit {
     }
   }
 
-  moveSegment(segment: SnakeSegment) {
+  moveSegment(segment: SnakeSegment, force: boolean = false) {
     const { id, tail, curr } = segment;
 
     // clear the current position
@@ -253,7 +323,7 @@ export class SnakeComponent implements OnInit {
     let { x, y } = this.outOfBoundsWarp(segment);
 
     // follow the head
-    if (id > 0) {
+    if (id > 0 && !force) {
       x = this.snake.body[id - 1].prev.x;
       y = this.snake.body[id - 1].prev.y;
     }
@@ -320,42 +390,7 @@ export class SnakeComponent implements OnInit {
     });
   }
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyPress(event: KeyboardEvent) {
-    if (!this.snake.alive) return;
-    const direction = Direction[event.key.replace('Arrow', '') as keyof typeof Direction];
-    const prevDirection = this.snake.body[1].direction;
-    console.log('🔑', direction, prevDirection);
-    console.log('🐍', this.snake);
-    if (direction === prevDirection) return;
-    if (this.snake.body[1].prev === this.snake.body[1].curr) return;
-    const head = this.snake.body[0];
-    head.direction = direction;
-
-    const seg = this.snake.body;
-    if (seg[0].direction === opposite(seg[1].direction)) {
-      head.direction = seg[1].direction;
-    }
-
-    if (!this.checkCollision(head)) {
-      this.snake.body[0] = head;
-    }
-  }
-
   log() {
     console.log('🤖', this);
   }
 }
-
-const opposite = (dir: Direction) => {
-  switch (dir) {
-    case Direction.Up:
-      return Direction.Down;
-    case Direction.Down:
-      return Direction.Up;
-    case Direction.Left:
-      return Direction.Right;
-    case Direction.Right:
-      return Direction.Left;
-  }
-};
