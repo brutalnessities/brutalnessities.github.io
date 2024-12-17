@@ -1,7 +1,8 @@
 <button *ngIf="button.show" (click)="onClick()">{{ button.text }}</button>
 <div class="content" id="grid">
   <div class="score">
-    <p>Score: {{ score }}</p>
+    <p>Score: {{ scoreDisplay(score) }}</p>
+    <p>High Score: {{ scoreDisplay(highscore) }}</p>
   </div>
   <div *ngFor="let col of _gridArray; index as i" class="col" id="column">
     <div
