@@ -2,25 +2,30 @@
     margin: 2em
     // display: flex
 
+#summary 
+    padding-bottom: 2em
+
+.beautiful
+    animation: bounce 5s infinite alternate
+
+@for $i from 1 through 10
+    .beautiful:nth-child(#{$i})
+        animation-delay: 0.1s * $i
+
+@keyframes bounce
+    0%
+        font-size: 16px
+        font-weight: 300
+        line-height: 1em
+        text-decoration: none
+    50%
+        text-decoration: underline
+    100%
+        font-size: 18px
+        font-weight: 600
+        line-height: calc(1em - 2px)
+        text-decoration: none
+
 .resume
-    backdrop-filter: contrast(.8)
+    background-color: #3e15432b
     padding: 2em
-    .title
-        display: inline-flex
-        justify-content: space-between
-        align-items: flex-end
-    
-.bullets
-    line-height: 0
-
-h4, h5, h6
-    margin-bottom: 0
-
-.mb0
-    margin-bottom: 0
-
-.pb1
-    padding-bottom: 1em
-
-.pb3
-    padding-bottom: 3em
