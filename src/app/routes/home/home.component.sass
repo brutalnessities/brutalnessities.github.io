@@ -1,24 +1,54 @@
+.card-wrapper
+    display: flex
+    flex-wrap: wrap                                                                                                                                                                                                                                                                                               
+.mat-mdc-card-title
+    text-decoration: underline
 .mat-mdc-card
-    flex-direction: column
-    flex-basis: 33%
+    flex: 1
     padding: 2em
+    margin: 2em
     section:has(img)
         text-align: center
         margin: 2em auto 1em
+        max-height: 500px
         img
-            width: 100%
+            max-height: 500px
+        img:not(:first-child)
+            display: none
+    .details
+        //rtl
+        text-align: right
+
+        line-height: 0em
+        padding-bottom: 1em
 .mat-mdc-card-header
     padding: 0
 
 .mat-mdc-card-avatar
     height: auto
 
-@media screen and (min-width: 600px)
+@media screen and (max-width: 600px)
+    .card-wrapper
+        display: flex
+        flex-wrap: wrap
+        flex-direction: column
     .mat-mdc-card
-        flex-direction: row
-        padding: 2em 4em
+        flex-basis: 33%
+        padding: 2em
+        margin: .5em
         section:has(img)
-            margin: 0 2em 0 0
+            text-align: center
+            margin: 2em auto 1em
             img
-                max-width: 700px
-                padding: 2em
+                width: 100%
+            img:not(:first-child)
+                display: block
+        .details
+            text-align: right
+            line-height: 0em
+            padding-bottom: 1em
+    .mat-mdc-card-header
+        padding: 0
+
+    .mat-mdc-card-avatar
+        height: auto

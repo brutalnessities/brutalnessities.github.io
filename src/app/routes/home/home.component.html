@@ -1,22 +1,30 @@
-<ng-container *ngFor="let i of arr">
+<div class="card-wrapper">
+  <ng-container *ngFor="let art of artworks">
+    <ng-container [ngTemplateOutlet]="artTemplate" [ngTemplateOutletContext]="{ art: art }"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #artTemplate let-art="art">
   <mat-card class="example-card">
     <mat-card-header>
       <!-- <mat-icon>more_vert</mat-icon>
       <div mat-card-avatar class="example-header-image"></div> -->
-      <mat-card-title>Untitled</mat-card-title>
-      <mat-card-subtitle>2022</mat-card-subtitle>
+      <mat-card-title>{{ art.title }}</mat-card-title>
+      <mat-card-subtitle>{{ art.year }}</mat-card-subtitle>
     </mat-card-header>
     <div>
       <section>
-        <img src="https://loremflickr.com/200/200?random={{ i }}" />
+        <ng-container *ngFor="let image of art.imageUrls">
+          <img [src]="image" />
+        </ng-container>
       </section>
       <section>
-        <p>
-          Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo.
-          Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint
-          efficiantur his ad. Eum no molestiae voluptatibus.
-        </p>
+        <div class="details">
+          <p><sub>{{ art.medium }} | {{ art.dimensions }}</sub></p>
+          <p><sub><i>{{ art.location }}</i></sub></p>
+        </div>
+        <p *ngIf="art.description">{{ art.description }}</p>
       </section>
     </div>
   </mat-card>
-</ng-container>
+</ng-template>

@@ -1,10 +1,14 @@
-@use 'sass/variables.sass' as var
+@forward 'sass/variables.sass'
+@forward 'sass/mat-card.sass'
+
 $burntPage: linear-gradient(90deg, antiquewhite, white, antiquewhite)
 $america: linear-gradient(315deg, red, white, blue)
+$purple-haze: #3e15432b
 
 :host
     --merica: var.$america
     --burnt-page: $burntPage
+    --purple-haze: $purple-haze
     --mat-protected-button-icon-spacing: 0
     --mat-protected-button-icon-offset: 0
     --bright-blue: oklch(51.01% 0.274 263.83)
@@ -50,6 +54,10 @@ body
     .mat-expansion-panel-body
         padding: 1em 1em 0em
     
+    .mat-mdc-card
+        background-color: $purple-haze
+
+
 
     // button + button
     //     margin-left: 1em

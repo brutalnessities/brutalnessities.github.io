@@ -1,0 +1,19 @@
+@media screen and (max-width: 600px)
+    .card-wrapper
+        display: flex
+        flex-wrap: wrap
+    .mat-mdc-card
+        flex-direction: column
+        flex-basis: 33%
+        padding: 2em
+        margin: .5em
+        section:has(img)
+            text-align: center
+            margin: 2em auto 1em
+            img
+                width: 100%
+    .mat-mdc-card-header
+        padding: 0
+
+    .mat-mdc-card-avatar
+        height: auto
