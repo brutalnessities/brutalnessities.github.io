@@ -1,16 +1,28 @@
+@use '../../../sass/mat-card'
+@use '../../../sass/variables' as *
+@use '../../../sass/content-wrapper'
+
+.intro
+    color: white
+    background-color: $red-haze
+    padding: 2em
+
+.image-details
+    margin-top: 1em
+
 .card-wrapper
     display: flex
-    flex-wrap: wrap                                                                                                                                                                                                                                                                                               
+    flex-wrap: wrap
+    gap: 2em
+    margin: 1.5em                                                                                                                                                                                                                                                                                           
 .mat-mdc-card-title
     text-decoration: underline
 .mat-mdc-card
     flex: 1
     padding: 2em
-    margin: 2em
     section:has(img)
         text-align: center
         margin: 2em auto 1em
-        max-height: 500px
         img
             max-height: 500px
         img:not(:first-child)
@@ -32,10 +44,11 @@
         display: flex
         flex-wrap: wrap
         flex-direction: column
+        margin: unset
+        gap: unset
     .mat-mdc-card
         flex-basis: 33%
         padding: 2em
-        margin: .5em
         section:has(img)
             text-align: center
             margin: 2em auto 1em

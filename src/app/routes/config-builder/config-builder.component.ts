@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { pairwise, startWith } from 'rxjs';
 import { debounce, debounceTime, filter } from 'rxjs/operators';
 import { Button, Template } from './types';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-config-builder',
@@ -162,5 +163,10 @@ export class ConfigBuilderComponent implements OnInit, AfterViewInit {
   removeTemplate(i: number) {
     this.config.controls.templates.removeAt(i);
     this.ngAfterViewInit();
+  }
+
+  drop(event: any) {
+    console.log(event); 
+    moveItemInArray(this.config.controls.templates.controls, event.previousIndex, event.currentIndex);
   }
 }

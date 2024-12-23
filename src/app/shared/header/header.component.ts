@@ -40,15 +40,15 @@ export class HeaderComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     this._headerHeight = document.querySelector('header')?.clientHeight ?? 135;
-    if (window.scrollY > this._headerHeight + 300) {
-      // if (!this.isSticky) console.log('💦💦💦', this);
-      this.isSticky = true;
-      this.open = false;
-    } else {
-      this.isSticky = false;
-      this.open = true;
-      // window.scrollTo(0, 0);
-    }
+    // if (window.scrollY > this._headerHeight + 300) {
+    //   // if (!this.isSticky) console.log('💦💦💦', this);
+    //   this.isSticky = true;
+    //   this.open = false;
+    // } else {
+    //   this.isSticky = false;
+    //   this.open = true;
+    //   // window.scrollTo(0, 0);
+    // }
   }
 
   ngOnInit() {

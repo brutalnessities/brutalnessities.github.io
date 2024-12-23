@@ -1,30 +1,52 @@
-<div class="card-wrapper">
-  <ng-container *ngFor="let art of artworks">
-    <ng-container [ngTemplateOutlet]="artTemplate" [ngTemplateOutletContext]="{ art: art }"></ng-container>
-  </ng-container>
-</div>
+<app-header></app-header>
 
-<ng-template #artTemplate let-art="art">
-  <mat-card class="example-card">
-    <mat-card-header>
-      <!-- <mat-icon>more_vert</mat-icon>
+<div class="content-wrapper">
+  <div class="intro">
+    <h4>Hey!</h4>
+    <p>I'm Torg, I'm a self-taught artist, USAF veteran, and Computer Science baccalaureate of 2022.</p>
+    <p>
+      This space i've designed as a living portfolio for my art, of which I have a difficult relationship with, and for
+      whatever else tickles my brain.
+    </p>
+    <p></p>
+  </div>
+
+  <div class="card-wrapper">
+    <ng-container *ngFor="let art of artworks">
+      <ng-container [ngTemplateOutlet]="artTemplate" [ngTemplateOutletContext]="{ art: art }"></ng-container>
+    </ng-container>
+  </div>
+
+  <ng-template #artTemplate let-art="art">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <!-- <mat-icon>more_vert</mat-icon>
       <div mat-card-avatar class="example-header-image"></div> -->
-      <mat-card-title>{{ art.title }}</mat-card-title>
-      <mat-card-subtitle>{{ art.year }}</mat-card-subtitle>
-    </mat-card-header>
-    <div>
-      <section>
-        <ng-container *ngFor="let image of art.imageUrls">
-          <img [src]="image" />
-        </ng-container>
-      </section>
-      <section>
-        <div class="details">
-          <p><sub>{{ art.medium }} | {{ art.dimensions }}</sub></p>
-          <p><sub><i>{{ art.location }}</i></sub></p>
-        </div>
-        <p *ngIf="art.description">{{ art.description }}</p>
-      </section>
-    </div>
-  </mat-card>
-</ng-template>
+        <mat-card-title
+          ><i>{{ art?.title ?? "" }}</i></mat-card-title
+        >
+        <mat-card-subtitle>{{ art.year }}</mat-card-subtitle>
+      </mat-card-header>
+      <div>
+        <section class="image-container">
+          <ng-container *ngFor="let image of art.imageUrls">
+            <img [src]="image" />
+          </ng-container>
+        </section>
+        <section class="image-details">
+          <div class="details">
+            <p>
+              <sub>{{ art.medium }} | {{ art.dimensions }}</sub>
+            </p>
+            <p>
+              <sub
+                ><i>{{ art.location }}</i></sub
+              >
+            </p>
+          </div>
+          <p *ngIf="art.description">{{ art.description }}</p>
+        </section>
+      </div>
+    </mat-card>
+  </ng-template>
+</div>

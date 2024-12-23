@@ -3,7 +3,11 @@
   [ngClass]="open ? (isSticky ? 'sticky' : 'open') : 'close'"
   [hidden]="!open"
 >
-  <h1 class="header-title">Torgs' Art</h1>
+  <img
+    class=""
+    src="/artsy-logo.png"
+    alt="Torg's Art logo"
+  />
   <nav class="header-nav">
     <button
       *ngFor="let route of routes"
