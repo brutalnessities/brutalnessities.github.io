@@ -1,10 +1,14 @@
 @use '../../../sass/variables' as *
 
+@media screen and (max-width: 600px)
+    .header-padding
+        display: none
 .header
     background-color: opacify($purple-haze, .5)
     backdrop-filter: blur(3px)
     color: white
     font-weight: bolder
+    position: fixed
     height: 100%
     flex-direction: column
     display: inline-flex
@@ -12,6 +16,7 @@
     white-space: nowrap
     @media screen and (max-width: 600px)
         position: fixed
+
 
     img
         height: 100px

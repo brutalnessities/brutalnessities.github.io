@@ -68,6 +68,10 @@ export class HeaderComponent implements OnInit {
     window.localStorage.setItem('headerOpen', JSON.stringify(this.open));
     window.postMessage({ type: 'toggleHeader' });
   }
+
+  contactMe() {
+    window.open('mailto:colton.torgrimson@gmail.com');
+  }
 }
 
 /**
