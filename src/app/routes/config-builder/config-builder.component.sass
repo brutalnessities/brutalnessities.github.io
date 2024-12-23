@@ -1,26 +1,34 @@
+@use '../../../sass/variables' as *
+@use '../../../sass/content-wrapper'
+
 :host
-    padding: 2em
-    @media screen and (max-width: 650px)
-        padding: 0
+    padding: 0
+    @media screen and (min-width: 650px)
+        flex-direction: row
+        display: flex
+    
 
 .content
+    // display: flex
+    width: 100%
     display: flex
-    gap: 2em
     .config,
     .json-preview
         flex: 1
-
+        min-width: calc(50% - 1em)
+        position: relative
     form
-        gap: 2em
         display: flex
         flex-direction: column
+
+.template-wrapper
+    margin-bottom: 1em
 
 .config-wrapper
     display: flex
     flex-direction: column
-    border: 10px inset orange
-    outline: 4px outset aliceblue
-    background-color: rgba(orange, 0.50)
+    border: 10px outset orange
+    background-color: $purple-haze
     padding: 1em
 
     h3
@@ -48,11 +56,16 @@
         &.add
             margin-bottom: 0
             align-self: flex-end
+
+.config, .json-preview, .preview
+    margin: .5em
+
 .config
-    border: 10px dashed #eeff0060
+    padding: 0
 .json-preview
     border: 10px solid green
     textarea
+        min-height: 600px
         padding: 2em
         flex: 1
 
@@ -60,6 +73,7 @@
     border: 10px solid blue
     background-color: #cbd8ffc0
     padding: 2em
+    margin-bottom: 2em
     .mbc-fab
         position: absolute
         right: 1em
@@ -103,7 +117,6 @@
     justify-content: center
     align-items: center
     padding: 0 2em
-    margin-bottom: 2em
     flex-wrap: nowrap
 
     

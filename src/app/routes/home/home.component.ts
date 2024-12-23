@@ -57,7 +57,6 @@ export class HomeComponent {
       id: 1,
     },
     {
-      title: 'Untitled',
       year: 2021,
       medium: 'Chalk on concrete',
       dimensions: hw([10, 6], 'ft'),
@@ -65,7 +64,6 @@ export class HomeComponent {
       id: 2,
     },
     {
-      title: 'Untitled',
       year: 2021,
       medium: 'Silver, copper, gold',
       description:
@@ -102,7 +100,6 @@ export class HomeComponent {
       id: 6,
     },
     {
-      title: 'Untitled',
       year: 2023,
       medium: 'Watercolor',
       dimensions: hw([11, 14]),
@@ -112,7 +109,6 @@ export class HomeComponent {
       id: 7,
     },
     {
-      title: 'Untitled',
       year: 2024,
       medium: 'Watercolor',
       dimensions: hw([12, 9]),
@@ -132,7 +128,6 @@ export class HomeComponent {
       id: 9,
     },
     {
-      title: 'Untitled',
       year: 2023,
       medium: 'Watercolor',
       dimensions: hw([11, 14]),
@@ -142,7 +137,6 @@ export class HomeComponent {
       id: 10,
     },
     {
-      title: 'Untitled',
       year: 2024,
       medium: 'Watercolor',
       dimensions: hw([12, 9]),
@@ -152,7 +146,6 @@ export class HomeComponent {
       id: 11,
     },
     {
-      title: 'Untitled',
       year: 2024,
       medium: 'Watercolor',
       dimensions: hw([12, 9]),
@@ -162,7 +155,6 @@ export class HomeComponent {
       id: 12,
     },
     {
-      title: 'Untitled',
       year: 2024,
       medium: 'Watercolor',
       dimensions: hw([11, 14]),
@@ -172,7 +164,6 @@ export class HomeComponent {
       id: 13,
     },
     {
-      title: 'Untitled',
       year: 2024,
       medium: 'Watercolor',
       dimensions: hw([10, 7]),
@@ -182,7 +173,6 @@ export class HomeComponent {
       id: 14,
     },
     {
-      title: 'Untitled',
       year: 2023,
       medium: 'Watercolor',
       dimensions: hw([7, 10]),
@@ -192,7 +182,6 @@ export class HomeComponent {
       id: 15,
     },
     {
-      title: 'Untitled',
       year: 2023,
       medium: 'Watercolor',
       dimensions: '24 in × 12 in',

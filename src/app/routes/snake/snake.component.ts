@@ -2,6 +2,7 @@ import { Component, Host, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Food, Grid, Snake, SnakeSegment, Tenant, Cell } from './types';
 import { Coordinate, Direction } from '../../shared/lib/types';
+import Hammer from 'hammerjs';
 
 const opposite = (dir: Direction) => {
   switch (dir) {
@@ -72,11 +73,30 @@ export class SnakeComponent implements OnInit {
     text: 'Start',
   };
 
-  selector = '//*[@id="column"][9]//*[@id="cell"][19]';
-
+  // https://hammerjs.github.io/api/#event-object
   ngOnInit() {
+    const angles = (event: any) => {
+      if (event.angle < -90) {
+        this.handleArrowLeft();
+      } else if (event.angle > 90) {
+        this.handleArrowRight();
+      } else if (event.angle > 0) {
+        this.handleArrowDown();
+      } else {
+        this.handleArrowUp();
+      }
+    };
+
+    var hammertime = new Hammer(document.body);
     this.resize();
     this.highscore = +(localStorage.getItem('highscore') ?? 0);
+
+    //swipe controls
+    hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+    hammertime.on('swipeleft', () => this.handleArrowLeft());
+    hammertime.on('swiperight', () => this.handleArrowRight());
+    hammertime.on('swipeup', () => this.handleArrowUp());
+    hammertime.on('swipedown', () => this.handleArrowDown());
   }
 
   _gridArray: Grid = [];
@@ -138,8 +158,8 @@ export class SnakeComponent implements OnInit {
     console.log('🤯🤯🤯');
   }
 
-  /** 
-   * @Keyboard_Controls 
+  /**
+   * @Keyboard_Controls
    * */
   @HostListener('document:keydown.arrowleft', ['$event'])
   handleArrowLeft() {
@@ -162,6 +182,7 @@ export class SnakeComponent implements OnInit {
   }
 
   funcDirection(direction: Direction) {
+    console.log('🔥', direction);
     if (this.checkCollision(this.future(direction))) {
       this.SNAKE_BRAIN();
     }

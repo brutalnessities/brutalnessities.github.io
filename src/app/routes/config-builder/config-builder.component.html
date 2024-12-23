@@ -1,14 +1,14 @@
 <div class="content">
-  <mat-card class="config">
+  <div class="config">
     <form [formGroup]="config">
-      <ng-container [ngTemplateOutlet]="divider" *ngIf="!config.controls.templates.length"></ng-container>
+      <!-- <ng-container [ngTemplateOutlet]="divider" *ngIf="!config.controls.templates.length"></ng-container> -->
       <!-- TEMPLATES -->
       <ng-container
         [formArrayName]="'templates'"
         *ngFor="let template of config.controls.templates.controls; let i = index"
       >
-        <div>
-          <mat-accordion>
+        <div cdkDropList class="template-wrapper" (cdkDropListDropped)="drop($event)">
+          <mat-accordion cdkDrag>
             <mat-expansion-panel [expanded]="i === 0" class="config-wrapper" formGroupName="{{ i }}">
               <mat-expansion-panel-header>
                 <button mat-mini-fab color="warn" class="close" (click)="removeTemplate(i)">
@@ -41,10 +41,11 @@
                       <mat-select formControlName="entry">
                         <mat-option [value]="'/'">default</mat-option>
                         <mat-option [value]="'estimator'">estimator</mat-option>
-                        <mat-option [value]="'accessories'">accessories</mat-option>
                         <mat-option [value]="'trade-in'">trade-in</mat-option>
-                        <mat-option [value]="'finance'">finance</mat-option>
                         <mat-option [value]="'eprice'">eprice</mat-option>
+                        <mat-option [value]="'prequal'">prequalifaction</mat-option>
+                        <mat-option [value]="'accessories'">accessories</mat-option>
+                        <mat-option [value]="'finance'">finance</mat-option>
                         <mat-option [value]="'protection'">protection</mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -64,36 +65,41 @@
             </mat-expansion-panel>
           </mat-accordion>
 
-          <ng-container [ngTemplateOutlet]="divider"></ng-container>
+          <!-- <ng-container [ngTemplateOutlet]="divider"></ng-container> -->
         </div>
       </ng-container>
     </form>
-  </mat-card>
+  </div>
 
   <!-- JSON PPREVIEW -->
-  <mat-card [formGroup]="config" class="json-preview">
-    <textarea (blur)="log($event)" form>{{ config.value | json }}</textarea>
-  </mat-card>
-
-  <!-- VISUAL PREVIEW -->
-  <mat-card class="preview">
-    <div class="templates">
-      <div *ngFor="let template of config.controls.templates.controls" class="template">
-        <h4>{{ template.controls.template.value }}</h4>
-        <div class="buttons-wrapper">
-          <div class="buttons" *ngFor="let button of template.controls.buttons.controls">
-            <button [ngStyle]="button.controls.styles.value.button">{{ button.controls.text.value }}</button>
+  <div>
+    <mat-card class="preview">
+      <div class="templates">
+        <div *ngFor="let template of config.controls.templates.controls" class="template">
+          <h4>{{ template.controls.template.value }}</h4>
+          <div class="buttons-wrapper">
+            <div class="buttons" *ngFor="let button of template.controls.buttons.controls">
+              <button [title]="button.controls.entry" [ngStyle]="button.controls.styles.value.button">
+                {{ button.controls.text.value }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </mat-card>
+    </mat-card>
+    
+    <mat-card [formGroup]="config" class="json-preview">
+      <textarea (blur)="log($event)" form>{{ config.value | json }}</textarea>
+    </mat-card>
+
+    <!-- VISUAL PREVIEW -->
+  </div>
 </div>
 
-<ng-template #divider>
+<!-- <ng-template #divider>
   <span class="add-template-line">
     <span class="line"></span>
     <button (click)="addTemplate()" class="add"><p>+</p></button>
     <span class="line"></span>
   </span>
-</ng-template>
+</ng-template> -->
