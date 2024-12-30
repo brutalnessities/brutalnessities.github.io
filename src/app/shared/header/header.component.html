@@ -1,6 +1,7 @@
 <header class="header" [ngClass]="open ? (isSticky ? 'sticky' : 'open') : 'close'" [hidden]="!open">
   <img src="/artsy-logo.png" alt="Torg's Art logo" />
   <nav class="header-nav">
+    <!-- Nav links -->
     <button
       *ngFor="let route of routes"
       class="header-nav-link"
@@ -18,6 +19,7 @@
 <!-- keeps the scroll position -->
 <div class="header-padding" [style.width]="open ? '200px' : ''"></div>
 
+<!-- Close button -->
 <button mat-mini-fab (click)="toggleOpen()" class="close">
   <mat-icon>{{ open ? "visibility_off" : "visibility_on" }}</mat-icon>
 </button>

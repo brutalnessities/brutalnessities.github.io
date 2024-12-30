@@ -1,7 +1,7 @@
 <button *ngIf="button.show" (click)="onClick()">{{ button.text }}</button>
-<div class="content" id="grid">
+<div *ngIf="windowLargeEnough; else tooSmall" class="content" id="grid">
   <div class="score">
-    <p>Score: {{ scoreDisplay(score) }}</p>
+    <p>Score: {{ scoreDisplay(foodAte) }}</p>
     <p>High Score: {{ scoreDisplay(highscore) }}</p>
   </div>
   <div *ngFor="let col of _gridArray; index as i" class="col" id="column">
@@ -17,3 +17,13 @@
   </div>
   <a id="bug" (click)="log()">🪰</a>
 </div>
+<ng-template #tooSmall>
+  <div class="too-small content">
+    <h1 class="outline-text">Your screen is too small...</h1>
+    <div>
+      <p *ngIf="name">{{'<--' }} {{ name }}</p>
+      <img src="/angry_snake.png" alt="">
+    </div>
+    <input *ngIf="!name" type="text" placeholder="Your name here" #name (change)="nameSnake(name)"/>
+  </div>
+</ng-template>

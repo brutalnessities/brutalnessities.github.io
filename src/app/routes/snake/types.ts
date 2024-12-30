@@ -8,7 +8,6 @@ export enum Tenant {
 
 export type Snake = {
   body: SnakeSegment[];
-  speed: number;
   alive: boolean;
 };
 

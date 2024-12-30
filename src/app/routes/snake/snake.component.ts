@@ -1,8 +1,8 @@
-import { Component, Host, HostListener, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, takeUntil, debounceTime } from 'rxjs';
 import { Food, Grid, Snake, SnakeSegment, Tenant, Cell } from './types';
 import { Coordinate, Direction } from '../../shared/lib/types';
-import Hammer from 'hammerjs';
+import { UtilityService } from '../../../services/utility.service';
 
 const opposite = (dir: Direction) => {
   switch (dir) {
@@ -22,20 +22,21 @@ const opposite = (dir: Direction) => {
   templateUrl: './snake.component.html',
   styleUrl: './snake.component.sass',
 })
-export class SnakeComponent implements OnInit {
+export class SnakeComponent implements OnInit, OnDestroy {
+  name = '';
+
   speed = 100;
 
-  score = 0;
+  foodAte = 0;
 
   highscore = 0;
 
-  padding = 100;
+  padding = 50;
 
   minCellSize = 25;
 
   snake: Snake = {
     body: [],
-    speed: 0,
     alive: false,
   };
 
@@ -55,9 +56,11 @@ export class SnakeComponent implements OnInit {
       .map((_x: any, i) => i);
   }
 
-  scoreDisplay(value: number) {
-    return value * 100;
-    // return value * Math.floor(this.H);
+  scoreDisplay(score: number) {
+    const X = this.X;
+    const Y = this.Y;
+    const factor = 1 / (X * Y);
+    return Math.round(factor * score * 1000) * 100;
   }
 
   px(num: number) {
@@ -73,30 +76,18 @@ export class SnakeComponent implements OnInit {
     text: 'Start',
   };
 
-  // https://hammerjs.github.io/api/#event-object
+  constructor(private utility: UtilityService) {}
+
   ngOnInit() {
-    const angles = (event: any) => {
-      if (event.angle < -90) {
-        this.handleArrowLeft();
-      } else if (event.angle > 90) {
-        this.handleArrowRight();
-      } else if (event.angle > 0) {
-        this.handleArrowDown();
-      } else {
-        this.handleArrowUp();
-      }
-    };
-
-    var hammertime = new Hammer(document.body);
-    this.resize();
     this.highscore = +(localStorage.getItem('highscore') ?? 0);
+    this.name = localStorage.getItem('snake-name') ?? '';
+    this.utility.headerOpen$.pipe(takeUntil(this.destroy$), debounceTime(100)).subscribe((value) => {
+      this.resize();
+    });
+  }
 
-    //swipe controls
-    hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-    hammertime.on('swipeleft', () => this.handleArrowLeft());
-    hammertime.on('swiperight', () => this.handleArrowRight());
-    hammertime.on('swipeup', () => this.handleArrowUp());
-    hammertime.on('swipedown', () => this.handleArrowDown());
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 
   _gridArray: Grid = [];
@@ -117,16 +108,27 @@ export class SnakeComponent implements OnInit {
     return this.grid$.asObservable();
   }
 
+  windowLargeEnough = true;
+
   resize() {
+    // TODO: it would be cool if the snake could survive resize
     if (this.snake.alive) {
       this.killSnake();
     }
 
+    // if the width is less than 650px hide the game
+    if (window.innerWidth < 650 || window.innerHeight < 650) {
+      this.button.show = false;
+      this.windowLargeEnough = false;
+      return;
+    }
+
     const pythagorean = (num: number = 0) => {
-      const height = document.querySelector('app-snake')?.clientHeight;
+      const height = window.innerHeight;
+      const width = window.innerWidth - (document.querySelector('.header')?.clientWidth ?? 200);
       num += this.padding;
-      const a = window.innerWidth - num;
-      const b = height && height > 500 ? height : 500;
+      const a = width - num;
+      const b = height - num;
       const c = Math.sqrt((a ^ 2) + (b ^ 2));
       return { a, b, c };
     };
@@ -150,12 +152,6 @@ export class SnakeComponent implements OnInit {
   onResize() {
     this.resize();
     console.log('🔁🔁🔁');
-  }
-
-  @HostListener('toggleHeader', ['$event'])
-  toggleHeader() {
-    this.resize();
-    console.log('🤯🤯🤯');
   }
 
   /**
@@ -206,7 +202,7 @@ export class SnakeComponent implements OnInit {
         break;
       case 'Restart':
         this.snake.alive = false;
-        this.score = 0;
+        this.foodAte = 0;
         this.startGame();
         break;
     }
@@ -240,7 +236,6 @@ export class SnakeComponent implements OnInit {
   }
 
   initSnake() {
-    this.snake.speed = this.speed;
     this.snake.alive = true;
     this.snake.body = Array(3)
       .fill(0)
@@ -308,7 +303,7 @@ export class SnakeComponent implements OnInit {
 
           //eat food
           if (this._gridArray[curr.x][curr.y].tenant === Tenant.Food) {
-            this.score++;
+            this.foodAte++;
             this.spawnFood();
             this.addSegment();
           }
@@ -328,10 +323,16 @@ export class SnakeComponent implements OnInit {
     this._gridArray[x][y].style = JSON.parse(JSON.stringify({ 'background-color': 'red' }));
     this.snake.alive = false;
     this.button.show = true;
-    if (this.score > this.highscore) {
-      this.highscore = this.score;
-      localStorage.setItem('highscore', `${this.score}`);
+
+    const score = this.scoreDisplay(this.foodAte);
+    if (this.foodAte > this.highscore) {
+      this.highscore = this.foodAte;
+      localStorage.setItem('highscore', `${this.foodAte}`);
     }
+  }
+
+  highscoreFoodAte() {
+    return this.scoreDisplay(this.highscore);
   }
 
   moveSegment(segment: SnakeSegment, force: boolean = false) {
@@ -409,6 +410,11 @@ export class SnakeComponent implements OnInit {
       direction: last.direction,
       tail: true,
     });
+  }
+
+  nameSnake(input: any) {
+    this.name = input.value;
+    localStorage.setItem('snake-name', this.name);
   }
 
   log() {

@@ -11,3 +11,8 @@
 
 .success
     @include theme($theme: DarkGreen)
+
+@mixin outlineText($color, $width, $blur: 0)
+    text-shadow: -#{$width} -#{$width} $blur $color, $width -#{$width} $blur $color, -#{$width} $width $blur $color, $width $width $blur $color
+.outline-text
+    @include outlineText(#000, 1px)
