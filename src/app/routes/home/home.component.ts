@@ -24,8 +24,6 @@ const hw = (hw: [number, number], metric = 'in') => {
   styleUrl: './home.component.sass',
 })
 export class HomeComponent {
-  arr = [1, 2, 3, 4, 5];
-
   get artworks(): Artwork[] {
     return this._artworks.sort((a: Artwork, b: Artwork) => {
       if (b.year !== a.year) {
@@ -36,6 +34,15 @@ export class HomeComponent {
   }
 
   _artworks: Artwork[] = [
+    { 
+      title: 'Burano, Italy',
+      year: 2025,
+      medium: 'Watercolor',
+      dimensions: hw([24, 36]),
+      location: 'Burano, Italy',
+      imageUrls: ['/burano.png'],
+      id: 0
+    },
     {
       title: 'Study - Geopoliticus Child Watching the Birth of the New Man - Salvador Dali',
       year: 2012,
