@@ -40,7 +40,7 @@ export class HomeComponent {
       medium: 'Watercolor',
       dimensions: hw([24, 36]),
       location: 'Burano, Italy',
-      imageUrls: ['/burano.png'],
+      imageUrls: [url('1O7PrcVTqaBL1VcP8W_RsAvfEyI1kNdkm')],
       id: 0
     },
     {
