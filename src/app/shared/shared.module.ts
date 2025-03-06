@@ -30,6 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
+    MatDialogModule,
   ],
   exports: [
     CommonModule,
@@ -47,6 +48,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
+    MatDialogModule,
   ],
 })
 export class SharedModule {}

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageDialogComponent } from '../../shared/image-dialog/image-dialog.component';
 const url = (str: string) => {
   return `https://drive.google.com/thumbnail?id=${str}&sz=w1000`;
 };
@@ -24,6 +26,16 @@ const hw = (hw: [number, number], metric = 'in') => {
   styleUrl: './home.component.sass',
 })
 export class HomeComponent {
+
+  constructor(private dialog: MatDialog) {}
+
+  expandImage(imageUrls: string[]) {
+    console.log(imageUrls);
+    this.dialog.open(ImageDialogComponent, {
+      data: { imageUrls },
+    });
+  }
+
   get artworks(): Artwork[] {
     return this._artworks.sort((a: Artwork, b: Artwork) => {
       if (b.year !== a.year) {
