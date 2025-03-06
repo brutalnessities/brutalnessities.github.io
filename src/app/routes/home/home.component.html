@@ -28,7 +28,7 @@
       <div>
         <section class="image-container">
           <ng-container *ngFor="let image of art.imageUrls">
-            <img [src]="image" />
+            <img [src]="image" (click)="expandImage(art.imageUrls)"/>
           </ng-container>
         </section>
         <section class="image-details">

@@ -6,6 +6,7 @@ import { HeaderComponent } from "./shared/header/header.component";
 import { HomeComponent } from './routes/home/home.component';
 import { JsonDirective } from './directives/json.directive';
 import { TestComponent } from './routes/test/test.component';
+import { ImageDialogComponent } from './shared/image-dialog/image-dialog.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { TestComponent } from './routes/test/test.component';
     HomeComponent,
     JsonDirective,
   ],
-  imports: [SharedModule, HeaderComponent],
+  imports: [SharedModule, HeaderComponent, ImageDialogComponent],
   exports: [SharedModule],
 })
 export class AppModule {}
