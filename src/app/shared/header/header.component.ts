@@ -19,16 +19,16 @@ export class HeaderComponent implements OnInit {
       path: '/',
     },
     {
-      label: 'Test',
-      path: '/test',
-    },
-    {
       label: 'Snake game',
       path: '/snake',
     },
     {
       label: 'Config-builder',
       path: '/config-builder',
+    },
+    {
+      label: 'About me',
+      path: '/about-me',
     },
   ];
 
