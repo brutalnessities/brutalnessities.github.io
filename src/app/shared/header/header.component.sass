@@ -8,15 +8,16 @@
     backdrop-filter: blur(5px)
     color: white
     font-weight: bolder
-    position: relative
-    height: 100%
+    position: sticky
+    height: 100vh
+    top: 0
     flex-direction: column
     display: inline-flex
     z-index: 1000
     white-space: nowrap
 
     .content
-        position: fixed
+        justify-items: center
 
     @media screen and (max-width: 600px)
         position: fixed
@@ -24,12 +25,10 @@
     img
         height: 100px
         width: 110px
-        // position: absolute
         margin: 1em
         align-self: center
 
     nav
-        // gap: .5em
         display: flex
         flex-wrap: nowrap
         justify-content: start

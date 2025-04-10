@@ -5,13 +5,13 @@ import { SharedModule } from './shared/shared.module';
 import { HeaderComponent } from "./shared/header/header.component";
 import { HomeComponent } from './routes/home/home.component';
 import { JsonDirective } from './directives/json.directive';
-import { TestComponent } from './routes/test/test.component';
+import { AboutMeComponent } from './routes/about-me/about-me.component';
 import { ImageDialogComponent } from './shared/image-dialog/image-dialog.component';
 
 @NgModule({
   declarations: [
     SnakeComponent,
-    TestComponent,
+    AboutMeComponent,
     ConfigBuilderComponent,
     HomeComponent,
     JsonDirective,
