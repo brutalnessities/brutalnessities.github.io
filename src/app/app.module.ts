@@ -7,6 +7,7 @@ import { HomeComponent } from './routes/home/home.component';
 import { JsonDirective } from './directives/json.directive';
 import { AboutMeComponent } from './routes/about-me/about-me.component';
 import { ImageDialogComponent } from './shared/image-dialog/image-dialog.component';
+import { PinochleComponent } from './routes/pinochle/pinochle.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { ImageDialogComponent } from './shared/image-dialog/image-dialog.compone
     AboutMeComponent,
     ConfigBuilderComponent,
     HomeComponent,
+    PinochleComponent,
     JsonDirective,
   ],
   imports: [SharedModule, HeaderComponent, ImageDialogComponent],

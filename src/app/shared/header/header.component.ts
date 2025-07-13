@@ -27,6 +27,10 @@ export class HeaderComponent implements OnInit {
       path: '/config-builder',
     },
     {
+      label: 'Pinochle',
+      path: '/pinochle',
+    },
+    {
       label: 'About me',
       path: '/about-me',
     },

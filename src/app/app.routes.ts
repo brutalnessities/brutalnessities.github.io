@@ -3,6 +3,7 @@ import { SnakeComponent } from './routes/snake/snake.component';
 import { ConfigBuilderComponent } from './routes/config-builder/config-builder.component';
 import { HomeComponent } from './routes/home/home.component';
 import { AboutMeComponent } from './routes/about-me/about-me.component';
+import { PinochleComponent } from './routes/pinochle/pinochle.component';
 
 export const routes: Routes = [
     {
@@ -18,6 +19,10 @@ export const routes: Routes = [
     {
         path: 'about-me',
         component: AboutMeComponent,
+    },
+    {
+        path: 'pinochle',
+        component: PinochleComponent,
     },
     {
         path: 'config-builder',

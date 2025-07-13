@@ -1,0 +1,60 @@
+<!-- 
+ ___________
+|___|_N_|___|
+|_E_|_C_|_W_|
+|___|_S_|___| 
+-->
+
+<section class="content">
+  <div></div>
+  <div class="player" id="north">
+    <ng-container
+      [ngTemplateOutlet]="playerTemplate"
+      [ngTemplateOutletContext]="{ $implicit: players[0] }"
+    ></ng-container>
+  </div>
+  <div></div>
+
+  <div class="player" id="east">
+    <ng-container
+      [ngTemplateOutlet]="playerTemplate"
+      [ngTemplateOutletContext]="{ $implicit: players[1] }"
+    ></ng-container>
+  </div>
+  <div id="center">
+    <!-- <button (click)="handDialog.showModal()">Show Hand</button> -->
+  </div>
+  <div class="player" id="west">
+    <ng-container
+      [ngTemplateOutlet]="playerTemplate"
+      [ngTemplateOutletContext]="{ $implicit: players[3] }"
+    ></ng-container>
+  </div>
+
+  <div></div>
+  <div class="player" id="south">
+    <ng-container
+      [ngTemplateOutlet]="playerTemplate"
+      [ngTemplateOutletContext]="{ $implicit: players[2] }"
+    ></ng-container>
+  </div>
+  <div></div>
+</section>
+
+<ng-template #playerTemplate let-player>
+  <ng-container *ngIf="!player; else playersLoaded">Loading</ng-container>
+  <ng-template #playersLoaded>
+    <div>
+      {{ playerHandDisplay(player) }}
+      <br />{{ player.potentialMeld }} - [{{ player.melds }}] <br />{{
+        player.desiredTrump ? "Desired Trump: " + player.desiredTrump : "No Desired Trump"
+      }}
+    </div>
+  </ng-template>
+</ng-template>
+
+<dialog #handDialog>
+  <button *ngFor="let card of players[0]?.hand" (click)="selectCard(card, $event)">
+    {{ card.rank }}{{ card.suit }}
+  </button>
+</dialog>

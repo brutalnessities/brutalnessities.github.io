@@ -1,0 +1,46 @@
+:host
+    // display: flex
+    // flex-direction: column
+    // justify-content: center
+    // align-items: center
+    height: 100vh
+    width: 100%
+
+.content
+    display: grid
+    grid-template-columns: .5fr 1.5fr .5fr
+    grid-template-rows: .75fr 1.5fr 1.5fr
+    width: 100%
+    height: 100%
+    // display: flex
+    // flex-direction: row
+    // justify-content: center
+    // align-items: center
+
+    .player
+        width: 100%
+        height: 100%
+        border: 1px solid black
+        font-size: x-large
+        line-height: normal
+
+        // &#east
+        //     writing-mode: vertical-rl
+        // &#west
+        //     writing-mode: sideways-lr
+
+dialog
+    position: absolute
+    top: 75%
+    display: flex
+    flex-wrap: wrap
+    button
+        font-size: xx-large
+        border: 1px solid black
+        height: 2em
+        display: flex
+        align-items: center
+        flex: 1 1 15%
+
+        &.selected
+            background-color: #a5ffc8
